@@ -1,9 +1,20 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'FirstPage.dart';
 
-void main() {
+void main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+        apiKey: "AIzaSyD0m59RSyjasm8k5EmQ_6JNse-rN4hN-eo",
+        appId: "153879182337",
+        messagingSenderId: "153879182337",
+        projectId: "wildfriendfinder")
+  );
+
   runApp(const WildFriendFinder());
 }
 

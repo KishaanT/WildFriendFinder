@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "153879182337",
+    "project_id": "wildfriendfinder",
+    "storage_bucket": "wildfriendfinder.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153879182337:android:64cc01fc4ce238c1919400",
+        "android_client_info": {
+          "package_name": "com.example.wildfriendfinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0m59RSyjasm8k5EmQ_6JNse-rN4hN-eo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
