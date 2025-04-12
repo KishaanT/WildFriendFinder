@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
+import 'SignUp.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -34,7 +34,9 @@ class _FirstPageState extends State<FirstPage> {
             ),
             SizedBox(height: 10,),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+              },
               child: Text("Sign Up",style: TextStyle(fontSize: 18),),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
