@@ -26,7 +26,8 @@ class _ListingPageState extends State<ListingPage> {
     int _selectIndex = index['index'];
     List<String> _widgetOption = [
       'homePage',
-      'listingPage'
+      'listingPage',
+      'newLisingPage'
     ];
 
     void pageChange(int index){
@@ -68,6 +69,12 @@ class _ListingPageState extends State<ListingPage> {
                         subtitle: Text('${pet['species']} • ${pet['breed']}'),
                         trailing: Text('${pet['age']} yrs'),
                         onTap: () {
+                          // Navigator.pushNamed(
+                          //     context,
+                          //     'oneListingPage',
+                          // arguments: {
+                          //       'petId': pet.id
+                          // });
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => OneListing(petId: pet.id)),
@@ -102,7 +109,8 @@ class _ListingPageState extends State<ListingPage> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.deepPurple,),label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.list),label: "List")
+          BottomNavigationBarItem(icon: Icon(Icons.list),label: "List"),
+          BottomNavigationBarItem(icon: Icon(Icons.add),label: "New Listing"),
         ],
         type: BottomNavigationBarType.shifting,
         currentIndex: _selectIndex,

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class OneListing extends StatefulWidget {
-  final String petId;
+  final String? petId;
   const OneListing({super.key, required this.petId});
 
   @override
@@ -14,6 +14,8 @@ class _OneListingState extends State<OneListing> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return FutureBuilder<DocumentSnapshot>(
       future: FirebaseFirestore.instance.collection('Pets').doc(widget.petId).get(),
       builder: (context, petSnapshot) {

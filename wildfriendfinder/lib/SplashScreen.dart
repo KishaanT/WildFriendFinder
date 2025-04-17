@@ -7,6 +7,9 @@ import 'Login.dart';
 import 'SignUp.dart';
 import 'HomePage.dart';
 import 'ListingPage.dart';
+import 'NewListing.dart';
+import 'OneListing.dart';
+import 'dart:async';
 
 void main() async{
 
@@ -36,6 +39,8 @@ class WildFriendFinder extends StatelessWidget {
         'signUpPage' : (context) => SignUp(),
         'homePage' : (context) => HomePage(),
         'listingPage' : (context) => ListingPage(),
+        'newListingPage' : (context) => NewListing(ownerId: null),
+        'oneListingPage' : (context) => OneListing(petId: null),
       },
     );
   }

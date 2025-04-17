@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'Pet.dart';
 
 class NewListing extends StatefulWidget {
-  final int ownerId;
+  final int? ownerId;
 
   const NewListing({super.key, required this.ownerId});
 
