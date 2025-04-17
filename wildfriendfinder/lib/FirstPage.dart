@@ -23,7 +23,13 @@ class _FirstPageState extends State<FirstPage> {
             SizedBox(height: 10,),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                  Navigator.pushNamed(
+                      context,
+                      'homePage',
+                    arguments: {
+                      'index': 0
+                    }
+                  );
                 },
                 child: Text("Login",style: TextStyle(fontSize: 18),),
               style: ElevatedButton.styleFrom(
@@ -38,7 +44,10 @@ class _FirstPageState extends State<FirstPage> {
             SizedBox(height: 10,),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                Navigator.pushNamed(
+                    context,
+                    'signUpPage'
+                );
               },
               child: Text("Sign Up",style: TextStyle(fontSize: 18),),
               style: ElevatedButton.styleFrom(

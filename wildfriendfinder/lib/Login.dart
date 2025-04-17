@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wildfriendfinder/User.dart';
 import 'dart:async';
 
-import 'package:wildfriendfinder/homePage.dart';
+import 'package:wildfriendfinder/HomePage.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -27,7 +27,13 @@ class _LoginState extends State<Login> {
           .get();
       if (login.docs.isNotEmpty) {
         print('Login Successful');
-        Navigator.push(context, MaterialPageRoute(builder: (context) => homePage()));
+        Navigator.pushNamed(
+            context,
+            'homePage',
+          arguments: {
+              'index': 0
+          }
+        );
       } else {
         showLoginError("Invalid username or password");
       }

@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'FirstPage.dart';
+import 'Login.dart';
+import 'SignUp.dart';
+import 'HomePage.dart';
+import 'ListingPage.dart';
 
 void main() async{
 
@@ -26,6 +30,13 @@ class WildFriendFinder extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
+      routes: {
+        'firstPage' : (context) => FirstPage(),
+        'loginPage' : (context) => Login(),
+        'signUpPage' : (context) => SignUp(),
+        'homePage' : (context) => HomePage(),
+        'listingPage' : (context) => ListingPage(),
+      },
     );
   }
 }
@@ -45,7 +56,10 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(
         Duration(seconds: 2),
-        () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> FirstPage()))
+        () => Navigator.pushNamed(
+            context,
+            'firstPage',
+        )
     );
   }
 
