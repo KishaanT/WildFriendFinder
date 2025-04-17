@@ -42,7 +42,12 @@ class _AccountPageState extends State<AccountPage> {
         title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
       ),
       body: Center(
-          child: Text("Account Page",style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),)
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+            ],
+          )
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

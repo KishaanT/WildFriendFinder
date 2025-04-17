@@ -195,8 +195,8 @@ class _SignUpState extends State<SignUp> {
                     String phone = phoneController.text.trim();
                     String address = addressController.text.trim();
                     String DOB = DOBController.text.trim();
-                    await registerUser(username, password, fName, lName, email, phone, address, DOB);
-                    Navigator.pop(context);
+                    registerUser(username, password, fName, lName, email, phone, address, DOB);
+                    // Navigator.pop(context);
                   }, child: Text('Register'))
                 ],
               )),
