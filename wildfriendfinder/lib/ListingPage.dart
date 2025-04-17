@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
  import 'HomePage.dart';
  import 'NewListing.dart';
+import 'OneListing.dart';
 
 class ListingPage extends StatefulWidget {
   const ListingPage({super.key});
@@ -46,15 +47,57 @@ class _ListingPageState extends State<ListingPage> {
       appBar: AppBar(
         title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> NewListing(ownerId: 2,)));
-            }, child: Text('New Listing'))
-          ],
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('Pets').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                final pets = snapshot.data!.docs;
+                return ListView.builder(
+                  itemCount: pets.length,
+                  itemBuilder: (context, index) {
+                    final pet = pets[index];
+                    return Card(
+                      margin: EdgeInsets.all(10),
+                      child: ListTile(
+                        title: Text(pet['name'] ?? 'Unnamed'),
+                        subtitle: Text('${pet['species']} • ${pet['breed']}'),
+                        trailing: Text('${pet['age']} yrs'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => OneListing(petId: pet.id)),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          // Centered "New Listing" Button
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewListing(ownerId: 2), // Pass ownerId here
+                    ),
+                  );
+                },
+                child: Text('New Listing'),
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
