@@ -39,15 +39,43 @@ class _AccountPageState extends State<AccountPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
+        title: Text("Account ",style: TextStyle(color: Colors.deepPurple),),
       ),
-      body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-
-            ],
-          )
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(width: 100, child: Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black,),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.person, size: 50,),
+                    ],
+                  ),
+                ),
+                ),
+                SizedBox(height: 20,),
+                Text('Username: john ',style: TextStyle(fontSize: 20),),
+                Text('First Name: John ',style: TextStyle(fontSize: 20),),
+                Text('Last Name: Doe ',style: TextStyle(fontSize: 20),),
+                Text('Password: ********* ',style: TextStyle(fontSize: 20),),
+                Text('Date of Birth: 01/01/2000',style: TextStyle(fontSize: 20),),
+                Text('Phone Number: 514-658-7896 ',style: TextStyle(fontSize: 20),),
+                Text('Address: 123 Main Street ',style: TextStyle(fontSize: 20),),
+              ],
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
