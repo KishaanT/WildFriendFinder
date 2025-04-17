@@ -54,6 +54,11 @@ class _LoginState extends State<Login> {
             ));
   }
 
+  void clearController() {
+    usernameController.clear();
+    passwordController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,25 +78,29 @@ class _LoginState extends State<Login> {
                   Text("Login into Account", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
                   Text("Enter your username and password to sign in", style: TextStyle(fontWeight: FontWeight.bold)),
                   SizedBox(height: 20,),
-                  TextFormField(
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  SizedBox(width: 350,
+                    child: TextFormField(
+                      controller: usernameController,
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),),
                   SizedBox(height: 10,),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  SizedBox(width: 350,
+                    child: TextFormField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(),
+                      ),
+                    ), ),
+
 
                   SizedBox(height: 10,),
                   ElevatedButton(onPressed: () async {
                      await login(usernameController.text.trim(), passwordController.text.trim());
+                     clearController();
                   }, child: Text('Login', style: TextStyle(color: Colors.black)),)
                 ],
               )

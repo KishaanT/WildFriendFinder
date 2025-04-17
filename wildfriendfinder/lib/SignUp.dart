@@ -111,69 +111,80 @@ class _SignUpState extends State<SignUp> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
                   SizedBox(height: 30),
-                  TextFormField(
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      border: OutlineInputBorder(),
+                  SizedBox(width: 350,
+                    child:TextFormField(
+                      controller: usernameController,
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                        border: OutlineInputBorder(),
+                      ),
+                    ), ),
+                  SizedBox(height: 10,),
+                  SizedBox(width: 350,
+                    child: TextFormField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),),
+                  SizedBox(height: 10,),
+                  SizedBox(width: 350,
+                    child: TextFormField(
+                      controller: fNameController,
+                      decoration: InputDecoration(
+                        labelText: 'First Name',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
                   SizedBox(height: 10,),
-                  TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  SizedBox(width: 350,
+                    child: TextFormField(
+                      controller: lNameController,
+                      decoration: InputDecoration(
+                        labelText: 'Last Name',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),),
                   SizedBox(height: 10,),
-                  TextFormField(
-                    controller: fNameController,
-                    decoration: InputDecoration(
-                      labelText: 'First Name',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  SizedBox(width: 350,
+                    child: TextFormField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                    ), ),
+
                   SizedBox(height: 10,),
-                  TextFormField(
-                    controller: lNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Last Name',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  SizedBox(width: 350,
+                    child: TextFormField(
+                      controller: DOBController,
+                      decoration: InputDecoration(
+                        labelText: 'Date of Birth',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),),
+
                   SizedBox(height: 10,),
-                  TextFormField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  SizedBox(width: 350,
+                    child: TextFormField(
+                      controller: phoneController,
+                      decoration: InputDecoration(
+                        labelText: 'Phone',
+                        border: OutlineInputBorder(),
+                      ),
+                    ), ),
                   SizedBox(height: 10,),
-                  TextFormField(
-                    controller: DOBController,
-                    decoration: InputDecoration(
-                      labelText: 'Date of Birth',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 10,),
-                  TextFormField(
-                    controller: phoneController,
-                    decoration: InputDecoration(
-                      labelText: 'Phone',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 10,),
-                  TextFormField(
-                    controller: addressController,
-                    decoration: InputDecoration(
-                      labelText: 'Address',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  SizedBox(width: 350,
+                    child: TextFormField(
+                      controller: addressController,
+                      decoration: InputDecoration(
+                        labelText: 'Address',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),),
                   SizedBox(height: 10,),
                   ElevatedButton(onPressed: () async {
                     String fName = fNameController.text.trim();

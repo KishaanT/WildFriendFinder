@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
  import 'HomePage.dart';
+ import 'NewListing.dart';
 
 class ListingPage extends StatefulWidget {
   const ListingPage({super.key});
@@ -10,9 +12,13 @@ class ListingPage extends StatefulWidget {
 
 class _ListingPageState extends State<ListingPage> {
 
+  final Stream<QuerySnapshot> _petStream = FirebaseFirestore.instance.collection('Pets').snapshots();
+
+  CollectionReference pets = FirebaseFirestore.instance.collection('Pets');
+
+
   @override
   Widget build(BuildContext context) {
-
 
 
     final Map<String, dynamic> index = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
@@ -41,7 +47,14 @@ class _ListingPageState extends State<ListingPage> {
         title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
       ),
       body: Center(
-          child: Text("Listing Page",style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),)
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> NewListing(ownerId: 2,)));
+            }, child: Text('New Listing'))
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

@@ -25,10 +25,7 @@ class _FirstPageState extends State<FirstPage> {
                 onPressed: () {
                   Navigator.pushNamed(
                       context,
-                      'homePage',
-                    arguments: {
-                      'index': 0
-                    }
+                      'loginPage',
                   );
                 },
                 child: Text("Login",style: TextStyle(fontSize: 18),),
