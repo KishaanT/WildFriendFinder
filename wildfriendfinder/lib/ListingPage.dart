@@ -27,7 +27,7 @@ class _ListingPageState extends State<ListingPage> {
     List<String> _widgetOption = [
       'homePage',
       'listingPage',
-      'newListingPage'
+      'accountPage'
     ];
 
     void pageChange(int index){
@@ -109,8 +109,8 @@ class _ListingPageState extends State<ListingPage> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.deepPurple,),label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.list),label: "List"),
-          BottomNavigationBarItem(icon: Icon(Icons.add),label: "New Listing"),
+          BottomNavigationBarItem(icon: Icon(Icons.list,color: Colors.deepPurple,),label: "List"),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle,color: Colors.deepPurple,),label: "Account")
         ],
         type: BottomNavigationBarType.shifting,
         currentIndex: _selectIndex,

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class AccountPage extends StatefulWidget {
   // final String? userId;
-  const HomePage({super.key,});
+  const AccountPage({super.key,});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<AccountPage> createState() => _AccountPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _AccountPageState extends State<AccountPage> {
 
 
 
@@ -42,14 +42,14 @@ class _HomePageState extends State<HomePage> {
         title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
       ),
       body: Center(
-        child: Text("Home Page",style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),)
+          child: Text("Account Page",style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),)
       ),
       bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.deepPurple,),label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.list,color: Colors.deepPurple,),label: "List"),
-            BottomNavigationBarItem(icon: Icon(Icons.account_circle,color: Colors.deepPurple,),label: "Account")
-          ],
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.deepPurple,),label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.list,color: Colors.deepPurple,),label: "List"),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle,color: Colors.deepPurple,),label: "Account")
+        ],
         type: BottomNavigationBarType.shifting,
         currentIndex: _selectIndex,
         selectedItemColor: Colors.indigoAccent,
