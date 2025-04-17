@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'Login.dart';
 import 'SignUp.dart';
 
 class FirstPage extends StatefulWidget {
@@ -21,7 +22,9 @@ class _FirstPageState extends State<FirstPage> {
             Text("Find your wild friend today!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
             SizedBox(height: 10,),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                },
                 child: Text("Login",style: TextStyle(fontSize: 18),),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class User {
-  String? userId;
+  int? userId;
   String? fName;
   String? lName;
   String? username;
@@ -18,7 +18,7 @@ class User {
 
   factory User.fromFirestore(Map<String, dynamic> data, String id) {
     return User(
-      userId: id,
+      userId: data['userId'] as int?,
       fName: data['fName'] as String?,
       lName: data['lName'] as String?,
       username: data['username'] as String?,
@@ -32,8 +32,9 @@ class User {
 
   Map<String, dynamic> toFirestore() {
     return {
-      if(fName != null) 'name' : fName,
-      if(lName != null) 'name' : lName,
+      if(userId != null) 'userId' : userId,
+      if(fName != null) 'fName' : fName,
+      if(lName != null) 'lName' : lName,
       if(username != null) 'username' : username,
       if(password != null) 'password' : password,
       if(email != null) 'email' : email,

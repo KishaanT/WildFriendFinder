@@ -10,6 +10,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
   final Stream<QuerySnapshot> _usersStream =
       FirebaseFirestore.instance.collection('Users').snapshots();
 
@@ -22,7 +23,22 @@ class _SignUpState extends State<SignUp> {
   TextEditingController addressController = TextEditingController();
   TextEditingController DOBController = TextEditingController();
 
+  Future<int> getNextUserID() async {
+    final counterRef = FirebaseFirestore.instance.collection('Counters').doc('userCounter');
+
+    return FirebaseFirestore.instance.runTransaction((transaction) async {
+      final snapshot = await transaction.get(counterRef);
+
+      int currentCount = snapshot.exists ? snapshot.get('count') : 0;
+      int nextID = currentCount + 1;
+
+      transaction.set(counterRef, {'count': nextID});
+      return nextID;
+    });
+  }
+
   Future<void> registerUser(
+
       String username,
       String password,
       String fName,
@@ -42,9 +58,13 @@ class _SignUpState extends State<SignUp> {
         print('Username already exist');
       }
 
+      int newUserId = await getNextUserID();
+
       User newUser = User(
-        userId: '',
+        userId: newUserId,
         username: username,
+        fName : fName,
+        lName : lName,
         password: password,
         email: email,
         phone: phone,
