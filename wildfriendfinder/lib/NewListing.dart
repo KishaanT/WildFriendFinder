@@ -139,7 +139,11 @@ class _NewListingState extends State<NewListing> {
                   SizedBox(height: 10,),
                   ElevatedButton(onPressed: () async {
                     addPetListing();
-                  }, child: Text('Post Listing'))
+                  }, child: Text('Post Listing')),
+                  SizedBox(height: 10,),
+                  ElevatedButton(onPressed: () async {
+                    Navigator.pop(context);
+                  }, child: Text('Go to Listing')),
                 ],
               )),
         ),

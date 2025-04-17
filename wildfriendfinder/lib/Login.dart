@@ -16,6 +16,8 @@ class _LoginState extends State<Login> {
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  // String? userLoggedIn;
+
 
   Future<void> login(String username, String password) async {
     try {
@@ -27,13 +29,23 @@ class _LoginState extends State<Login> {
           .get();
       if (login.docs.isNotEmpty) {
         print('Login Successful');
-        Navigator.pushNamed(
-            context,
-            'homePage',
-          arguments: {
-              'index': 0
-          }
+        // DocumentSnapshot<Map<String,dynamic>> getUserId = login.docs.first;
+        // userLoggedIn = getUserId.data()?['userId'];
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(), // Pass ownerId here
+          ),
         );
+
+        // Navigator.pushNamed(
+        //     context,
+        //     'homePage',
+        //   arguments: {
+        //       'index': 0,
+        //     'userId' : userLoggedIn,
+        //   }
+        // );
       } else {
         showLoginError("Invalid username or password");
       }

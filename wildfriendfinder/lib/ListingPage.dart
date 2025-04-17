@@ -27,7 +27,7 @@ class _ListingPageState extends State<ListingPage> {
     List<String> _widgetOption = [
       'homePage',
       'listingPage',
-      'newLisingPage'
+      'newListingPage'
     ];
 
     void pageChange(int index){
