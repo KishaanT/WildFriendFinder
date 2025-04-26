@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:wildfriendfinder/AccountPage.dart';
 
 class HomePage extends StatefulWidget {
-  // final String? userId;
-  const HomePage({super.key,});
+  final String? userId;
+  const HomePage({super.key, required this.userId,});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -31,7 +32,8 @@ class _HomePageState extends State<HomePage> {
             context,
             _widgetOption[index],
             arguments: {
-              'index': _selectIndex
+              'index': _selectIndex,
+              'userId' : widget.userId
             }
         );
       });
@@ -42,7 +44,22 @@ class _HomePageState extends State<HomePage> {
         title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
       ),
       body: Center(
-        child: Text("Home Page",style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),)
+        child: Column(
+          children: [
+            Text("Home Page",style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),),
+            Text("Our bottom navigation for account doesn't work. Please press the button to go to the account page. ↓",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold, color: Colors.red),),
+            // Text("User ID: ${widget.userId}",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
+            SizedBox(height: 30,),
+            ElevatedButton(onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AccountPage(userId: widget.userId,), // Pass ownerId here
+                ),
+              );
+            }, child: Text('Go to Account'))
+          ],
+        )
       ),
       bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[

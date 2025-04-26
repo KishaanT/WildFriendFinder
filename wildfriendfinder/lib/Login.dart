@@ -29,12 +29,14 @@ class _LoginState extends State<Login> {
           .get();
       if (login.docs.isNotEmpty) {
         print('Login Successful');
-        // DocumentSnapshot<Map<String,dynamic>> getUserId = login.docs.first;
-        // userLoggedIn = getUserId.data()?['userId'];
+
+        String userId = login.docs.first.id;
+
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(), // Pass ownerId here
+            builder: (context) => HomePage(userId: userId,), // Pass ownerId here
           ),
         );
 
@@ -101,6 +103,7 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 10,),
                   SizedBox(width: 350,
                     child: TextFormField(
+                      obscureText: true,
                       controller: passwordController,
                       decoration: InputDecoration(
                         labelText: 'Password',
@@ -113,7 +116,8 @@ class _LoginState extends State<Login> {
                   ElevatedButton(onPressed: () async {
                      await login(usernameController.text.trim(), passwordController.text.trim());
                      clearController();
-                  }, child: Text('Login', style: TextStyle(color: Colors.black)),)
+                  }, child: Text('Login', style: TextStyle(color: Colors.black)),),
+
                 ],
               )
           ),
