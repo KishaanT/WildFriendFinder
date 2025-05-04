@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'OneListing.dart';
 
 class ListingPage extends StatefulWidget {
-  const ListingPage({super.key});
+  final String? userId;
+  final int? index;
+
+  const ListingPage({super.key, required this.userId, required this.index,});
 
   @override
   State<ListingPage> createState() => _ListingPageState();
@@ -37,6 +40,7 @@ class _ListingPageState extends State<ListingPage> {
             context,
             _widgetOption[index],
             arguments: {
+              'userId' : widget.userId,
               'index': _selectIndex
             }
         );
@@ -46,6 +50,7 @@ class _ListingPageState extends State<ListingPage> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
       ),
       body: Column(
@@ -77,7 +82,7 @@ class _ListingPageState extends State<ListingPage> {
                           // });
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => OneListing(petId: pet.id)),
+                            MaterialPageRoute(builder: (context) => OneListing(petId: pet.id, userId: widget.userId,)),
                           );
                         },
                       ),
@@ -96,7 +101,7 @@ class _ListingPageState extends State<ListingPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NewListing(ownerId: 2), // Pass ownerId here
+                      builder: (context) => NewListing(ownerId: widget.userId), // Pass ownerId here
                     ),
                   );
                 },
@@ -112,7 +117,7 @@ class _ListingPageState extends State<ListingPage> {
           BottomNavigationBarItem(icon: Icon(Icons.list,color: Colors.deepPurple,),label: "List"),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle,color: Colors.deepPurple,),label: "Account")
         ],
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _selectIndex,
         selectedItemColor: Colors.indigoAccent,
         onTap: pageChange,
@@ -122,3 +127,4 @@ class _ListingPageState extends State<ListingPage> {
     );
   }
 }
+

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class OneListing extends StatefulWidget {
   final String? petId;
-  const OneListing({super.key, required this.petId});
+  final String? userId;
+  const OneListing({super.key, required this.petId, required this.userId});
 
   @override
   State<OneListing> createState() => _OneListingState();
@@ -45,7 +46,7 @@ class _OneListingState extends State<OneListing> {
             final userData = userDocs.isNotEmpty
                 ? userDocs.first.data() as Map<String, dynamic>
                 : null;
-
+            print('OwnerId$ownerId');
             return Scaffold(
               appBar: AppBar(
                 title: Text(petData['name'] ?? 'Pet Details'),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:wildfriendfinder/FirstPage.dart';
+import 'package:wildfriendfinder/Login.dart';
 import 'package:wildfriendfinder/User.dart';
 
 class AccountPage extends StatefulWidget {
@@ -22,10 +24,7 @@ class _AccountPageState extends State<AccountPage> {
   final Stream<QuerySnapshot> _usersStream =
       FirebaseFirestore.instance.collection('Users').snapshots();
 
-  
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
-
-
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController fNameController = TextEditingController();
@@ -206,86 +205,130 @@ class _AccountPageState extends State<AccountPage> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "Account ",
           style: TextStyle(color: Colors.deepPurple),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextField(
-                  controller: usernameController,
-                  decoration: InputDecoration(labelText: 'Username'),
-                ),
-                TextField(
-                  controller: fNameController,
-                  decoration: InputDecoration(labelText: 'First Name'),
-                ),
-                TextField(
-                  controller: lNameController,
-                  decoration: InputDecoration(labelText: 'Last Name'),
-                ),
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                TextField(
-                  controller: phoneController,
-                  decoration: InputDecoration(labelText: 'Phone'),
-                  keyboardType: TextInputType.phone,
-                ),
-                TextField(
-                  controller: addressController,
-                  decoration: InputDecoration(labelText: 'Address'),
-                  maxLines: 2,
-                ),
-                TextField(
-                  controller: DOBController,
-                  decoration: InputDecoration(labelText: 'Date of Birth'),
-                ),
-                TextField(
-                  controller: passwordController,
-                  decoration: InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                Row(children: [
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Profile icon and welcome text at the top
+              Column(
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.black,
+                              child: Icon(Icons.person,
+                                  size: 50, color: Colors.white),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              '${fNameController.text + " " + lNameController.text}',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> FirstPage()));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10))),
+                              // fixedSize: Size(100, 40)
+                            ),
+                            child: Text('Logout'))
+                      ]),
+                  SizedBox(height: 20),
+                ],
+              ),
+
+              // Form fields
+              TextField(
+                controller: usernameController,
+                decoration: InputDecoration(labelText: 'Username'),
+              ),
+              TextField(
+                controller: fNameController,
+                decoration: InputDecoration(labelText: 'First Name'),
+              ),
+              TextField(
+                controller: lNameController,
+                decoration: InputDecoration(labelText: 'Last Name'),
+              ),
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              TextField(
+                controller: phoneController,
+                decoration: InputDecoration(labelText: 'Phone'),
+                keyboardType: TextInputType.phone,
+              ),
+              TextField(
+                controller: addressController,
+                decoration: InputDecoration(labelText: 'Address'),
+              ),
+              TextField(
+                controller: DOBController,
+                decoration: InputDecoration(labelText: 'Date of Birth'),
+              ),
+              TextField(
+                controller: passwordController,
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
+              ),
+              SizedBox(height: 20),
+
+              // Action buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
                   ElevatedButton(
                     onPressed: updateUserData,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: Colors.black,
                       foregroundColor: Colors.white,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      // fixedSize: Size(100, 40)
                     ),
                     child: Text('Update Profile'),
                   ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple,
-                        foregroundColor: Colors.white,
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                      ),
-                      onPressed: () {
-                        deleteUserAccount();
-                      },
-                      child: Text('Delete'))
-                ]),
-                Text(
-                  'UserID: ${widget.userId}',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
-            ),
-          ],
+                    onPressed: deleteUserAccount,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      // fixedSize: Size(100, 40)
+                    ),
+                    child: Text('Delete'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Text(
+                'UserID: ${widget.userId}',
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -309,7 +352,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               label: "Account")
         ],
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _selectIndex,
         selectedItemColor: Colors.indigoAccent,
         onTap: pageChange,

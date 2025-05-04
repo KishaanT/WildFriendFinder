@@ -5,7 +5,7 @@ class Pet {
   String? breed;
   String? sex;
   String? description;
-  int? ownerId; // Your custom userId, not Firebase UID
+  String? ownerId; // Your custom userId, not Firebase UID
 
   Pet({
     this.name,

@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
       'accountPage'
     ];
 
-
     void pageChange(int index){
       setState(() {
         _selectIndex = index;
@@ -41,28 +40,18 @@ class _HomePageState extends State<HomePage> {
         );
       });
     }
-    print(widget.userId);
-    print(widget.userId);
+
     return Scaffold(
 
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Home Page",style: TextStyle(fontSize: 35,fontWeight: FontWeight.bold),),
-            Text("Our bottom navigation for account doesn't work. Please press the button to go to the account page. ↓",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold, color: Colors.red),),
-            // Text("User ID: ${widget.userId}",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
-            SizedBox(height: 30,),
-            ElevatedButton(onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AccountPage(userId: widget.userId,index: _selectIndex,), // Pass ownerId here
-                ),
-              );
-            }, child: Text('Go to Account'))
           ],
         )
       ),
@@ -72,7 +61,7 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(icon: Icon(Icons.list,color: Colors.deepPurple,),label: "List"),
             BottomNavigationBarItem(icon: Icon(Icons.account_circle,color: Colors.deepPurple,),label: "Account")
           ],
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         currentIndex: _selectIndex,
         selectedItemColor: Colors.indigoAccent,
         onTap: pageChange,

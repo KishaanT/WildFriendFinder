@@ -12,16 +12,14 @@ import 'OneListing.dart';
 import 'dart:async';
 import 'AccountPage.dart';
 
-void main() async{
-
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: FirebaseOptions(
-        apiKey: "AIzaSyD0m59RSyjasm8k5EmQ_6JNse-rN4hN-eo",
-        appId: "153879182337",
-        messagingSenderId: "153879182337",
-        projectId: "wildfriendfinder")
-  );
+      options: FirebaseOptions(
+          apiKey: "AIzaSyD0m59RSyjasm8k5EmQ_6JNse-rN4hN-eo",
+          appId: "153879182337",
+          messagingSenderId: "153879182337",
+          projectId: "wildfriendfinder"));
 
   runApp(const WildFriendFinder());
 }
@@ -35,24 +33,45 @@ class WildFriendFinder extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
       routes: {
-        'firstPage' : (context) => FirstPage(),
-        'loginPage' : (context) => Login(),
-        'signUpPage' : (context) => SignUp(),
+        'firstPage': (context) => FirstPage(),
+        'loginPage': (context) => Login(),
+        'signUpPage': (context) => SignUp(),
         // 'homePage' : (context) => HomePage(),
-        'homePage' : (context) => HomePage(userId: null,index: 0,),
-        'listingPage' : (context) => ListingPage(),
-        'newListingPage' : (context) => NewListing(ownerId: null),
-        'oneListingPage' : (context) => OneListing(petId: null),
+        // 'homePage' : (context) => HomePage(userId: null,index: 0,),
+        'listingPage': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return ListingPage(
+            userId: args['userId'],
+            index: args['index'],
+          );
+        },
+        'newListingPage': (context) => NewListing(ownerId: null),
+        'oneListingPage': (context) {
+    final args = ModalRoute.of(context)!.settings.arguments
+    as Map<String, dynamic>;
+    return OneListing(
+    userId: args['userId'],
+    petId:null,
+    );
+    },
         // 'accountPage' : (context) => AccountPage(userId: null,),
         'accountPage': (context) {
-          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-          return AccountPage(userId: args['userId'], index: args['index'],);
+          final args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return AccountPage(
+            userId: args['userId'],
+            index: args['index'],
+          );
         },
-        // 'homePage': (context) {
-        //   final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-        //   return HomePage(userId: args['userId']);
-        // },
-
+        'homePage': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return HomePage(
+            userId: args['userId'],
+            index: args['index'],
+          );
+        },
       },
     );
   }
@@ -66,7 +85,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
@@ -74,10 +92,9 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
         Duration(seconds: 2),
         () => Navigator.pushNamed(
-            context,
-            'firstPage',
-        )
-    );
+              context,
+              'firstPage',
+            ));
   }
 
   @override
@@ -85,11 +102,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
       alignment: Alignment.center,
       color: Colors.grey,
-      child: Text("Splash Screen to change", style: TextStyle(fontSize: 18, color: Colors.white),),
+      child: Text(
+        "Splash Screen to change",
+        style: TextStyle(fontSize: 18, color: Colors.white),
+      ),
       height: 100,
       width: 300,
     );
   }
 }
-
-

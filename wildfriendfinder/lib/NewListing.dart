@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'Pet.dart';
 
 class NewListing extends StatefulWidget {
-  final int? ownerId;
+  final String? ownerId;
 
   const NewListing({super.key, required this.ownerId});
 
@@ -21,6 +21,7 @@ class _NewListingState extends State<NewListing> {
   TextEditingController descriptionController = TextEditingController();
 
   Future<void> addPetListing() async {
+    // int newOwnerId = int.parse(widget.ownerId);
     try {
       Pet newPet = Pet(
         name: nameController.text.trim(),
