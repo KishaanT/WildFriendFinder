@@ -3,7 +3,9 @@ import 'package:wildfriendfinder/AccountPage.dart';
 
 class HomePage extends StatefulWidget {
   final String? userId;
-  const HomePage({super.key, required this.userId,});
+  final int index;
+  const HomePage({super.key, required this.userId,required this.index});
+
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -13,17 +15,18 @@ class _HomePageState extends State<HomePage> {
 
 
 
-  @override
-  Widget build(BuildContext context) {
+  @override  Widget build(BuildContext context) {
 
-    // final Map<String, dynamic> index = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    int _selectIndex = 0;
+    // final Map<String, dynamic> data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+
+    int _selectIndex = widget.index;
     print(_selectIndex);
     List<String> _widgetOption = [
       'homePage',
       'listingPage',
       'accountPage'
     ];
+
 
     void pageChange(int index){
       setState(() {
@@ -33,13 +36,15 @@ class _HomePageState extends State<HomePage> {
             _widgetOption[index],
             arguments: {
               'index': _selectIndex,
-              'userId' : widget.userId
+              'userId' :widget.userId,
             }
         );
       });
     }
-
+    print(widget.userId);
+    print(widget.userId);
     return Scaffold(
+
       appBar: AppBar(
         title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
       ),
@@ -54,7 +59,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AccountPage(userId: widget.userId,), // Pass ownerId here
+                  builder: (context) => AccountPage(userId: widget.userId,index: _selectIndex,), // Pass ownerId here
                 ),
               );
             }, child: Text('Go to Account'))

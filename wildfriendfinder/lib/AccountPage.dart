@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:wildfriendfinder/User.dart';
 
 class AccountPage extends StatefulWidget {
   final String? userId;
+  final int? index;
 
   const AccountPage({
     super.key,
     required this.userId,
+    required this.index,
   });
 
   @override
@@ -18,6 +21,11 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   final Stream<QuerySnapshot> _usersStream =
       FirebaseFirestore.instance.collection('Users').snapshots();
+
+  
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+
+
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController fNameController = TextEditingController();

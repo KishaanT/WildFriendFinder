@@ -16,7 +16,7 @@ class _LoginState extends State<Login> {
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  // String? userLoggedIn;
+  String? userLoggedIn;
 
 
   Future<void> login(String username, String password) async {
@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(userId: userId,), // Pass ownerId here
+            builder: (context) => HomePage(userId: userId,index:0), // Pass ownerId here
           ),
         );
 
