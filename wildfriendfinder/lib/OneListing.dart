@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'EditPetPage.dart';
+
 class OneListing extends StatefulWidget {
   final String? petId;
   final String? userId;
+
   const OneListing({super.key, required this.petId, required this.userId});
 
   @override
@@ -31,25 +34,35 @@ class _OneListingState extends State<OneListing> {
         final petData = petSnapshot.data!.data() as Map<String, dynamic>;
         final ownerId = petData['ownerId'];
 
-        return FutureBuilder<QuerySnapshot>(
+        final isOwner = widget.userId == ownerId;
+
+        return FutureBuilder<DocumentSnapshot>(
           future: FirebaseFirestore.instance
               .collection('Users')
-              .where('userId', isEqualTo: ownerId)
-              .limit(1)
+              .doc(ownerId)
               .get(),
           builder: (context, userSnapshot) {
             if (userSnapshot.connectionState == ConnectionState.waiting) {
               return Scaffold(body: Center(child: CircularProgressIndicator()));
             }
 
-            final userDocs = userSnapshot.data?.docs ?? [];
-            final userData = userDocs.isNotEmpty
-                ? userDocs.first.data() as Map<String, dynamic>
-                : null;
+            final userData = userSnapshot.data?.data() as Map<String, dynamic>?;
             print('OwnerId$ownerId');
             return Scaffold(
               appBar: AppBar(
                 title: Text(petData['name'] ?? 'Pet Details'),
+                backgroundColor: Colors.deepPurple,
+                actions: [
+                  if (isOwner)
+                    IconButton(
+                      icon: Icon(Icons.edit), onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditPetPage(
+                          petId: widget.petId,
+                          petData: petData,
+                        )));
+                    },
+                    ),
+                ],
               ),
               body: Padding(
                 padding: const EdgeInsets.all(16.0),

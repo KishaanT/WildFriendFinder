@@ -19,9 +19,23 @@ class _NewListingState extends State<NewListing> {
   TextEditingController breedController = TextEditingController();
   TextEditingController sexController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-
+  String? docUserId;
   Future<void> addPetListing() async {
     // int newOwnerId = int.parse(widget.ownerId);
+    // DocumentSnapshot userDoc = await FirebaseFirestore.instance
+    //     .collection('Users')
+    //     .doc()
+    //     .get();
+
+    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('Users')
+        .where('userId', isEqualTo: widget.ownerId)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      DocumentSnapshot userDoc = snapshot.docs.first;
+      docUserId = userDoc.id; // This is the document ID
+    }
+
     try {
       Pet newPet = Pet(
         name: nameController.text.trim(),
@@ -30,7 +44,7 @@ class _NewListingState extends State<NewListing> {
         breed: breedController.text.trim(),
         sex: sexController.text.trim(),
         description: descriptionController.text.trim(),
-        ownerId: widget.ownerId
+        ownerId: docUserId
       );
 
       await FirebaseFirestore.instance.collection('Pets')

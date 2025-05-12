@@ -8,7 +8,9 @@ class ListingPage extends StatefulWidget {
   final String? userId;
   final int? index;
 
-  const ListingPage({super.key, required this.userId, required this.index,});
+  const ListingPage({super.key,
+    required this.userId,
+    required this.index,});
 
   @override
   State<ListingPage> createState() => _ListingPageState();
@@ -82,7 +84,7 @@ class _ListingPageState extends State<ListingPage> {
                           // });
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => OneListing(petId: pet.id, userId: widget.userId,)),
+                            MaterialPageRoute(builder: (context) => OneListing(petId: pet.id, userId: widget.userId)),
                           );
                         },
                       ),

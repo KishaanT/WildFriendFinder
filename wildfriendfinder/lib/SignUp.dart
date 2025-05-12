@@ -61,7 +61,6 @@ class _SignUpState extends State<SignUp> {
       int newUserId = await getNextUserID();
 
       User newUser = User(
-        userId: newUserId,
         username: username,
         fName : fName,
         lName : lName,
