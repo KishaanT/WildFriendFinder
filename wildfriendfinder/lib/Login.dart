@@ -31,16 +31,13 @@ class _LoginState extends State<Login> {
         print('Login Successful');
 
         String userId = login.docs.first.id;
-        int ownerId = login.docs.first.data()['userId'];
-
 
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(userId: userId,index:0), // Pass ownerId here
+            builder: (context) => HomePage(userId: userId,index:0),
           ),
         );
-
 
         // Navigator.pushNamed(
         //     context,
