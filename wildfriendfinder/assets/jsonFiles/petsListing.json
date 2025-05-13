@@ -1,0 +1,146 @@
+[
+  {
+    "id": 1,
+    "name": "Buddy",
+    "species": "Dog",
+    "breed": "Labrador Retriever",
+    "age": 2,
+    "gender": "Male",
+    "size": "Large",
+    "description": "Friendly and energetic, loves to play fetch!",
+    "photos": [
+      "https://example.com/buddy1.jpg",
+      "https://example.com/buddy2.jpg"
+    ],
+    "contact": {
+      "name": "SPCA Montreal",
+      "phone": "514-735-2722",
+      "email": "info@spca.com",
+      "address": "5215 Jean-Talon St W, Montreal, QC H4P 1X1, Canada"
+    },
+    "status": "Available",
+    "published_date": "2024-07-24T14:00:00Z",
+    "last_updated_date": "2024-07-24T14:00:00Z",
+    "location": {
+      "city": "Montreal",
+      "state": "QC",
+      "country": "Canada",
+      "zip_code": "H4P 1X1"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Whiskers",
+    "species": "Cat",
+    "breed": "Siamese",
+    "age": 1,
+    "gender": "Female",
+    "size": "Medium",
+    "description": "Calm and affectionate, loves to cuddle.",
+    "photos": [
+      "https://example.com/whiskers1.jpg"
+    ],
+    "contact": {
+      "name": "SPCA Montreal",
+      "phone": "514-735-2722",
+      "email": "info@spca.com",
+      "address": "5215 Jean-Talon St W, Montreal, QC H4P 1X1, Canada"
+    },
+    "status": "Available",
+    "published_date": "2024-07-23T10:00:00Z",
+    "last_updated_date": "2024-07-23T10:00:00Z",
+    "location": {
+      "city": "Montreal",
+      "state": "QC",
+      "country": "Canada",
+      "zip_code": "H4P 1X1"
+    }
+  },
+  {
+    "id": 3,
+    "name": "Rocky",
+    "species": "Dog",
+    "breed": "German Shepherd",
+    "age": 3,
+    "gender": "Male",
+    "size": "Extra Large",
+    "description": "Loyal and protective. Needs an experienced owner.",
+    "photos": [
+      "https://example.com/rocky1.jpg",
+      "https://example.com/rocky2.jpg",
+      "https://example.com/rocky3.jpg"
+    ],
+    "contact": {
+      "name": "Refuge Montreal",
+      "phone": "514-738-4128",
+      "email": "info@refugemontreal.org",
+      "address": "3575 Rue Dandurand, Montréal, QC H2G 1Z6, Canada"
+    },
+    "status": "Available",
+    "published_date": "2024-07-20T12:00:00Z",
+    "last_updated_date": "2024-07-25T15:00:00Z",
+    "location": {
+      "city": "Montreal",
+      "state": "QC",
+      "country": "Canada",
+      "zip_code": "H2G 1Z6"
+    }
+  },
+  {
+    "id": 4,
+    "name": "Tweety",
+    "species": "Bird",
+    "breed": "Canary",
+    "age": 1,
+    "gender": "Female",
+    "size": "Small",
+    "description": "Sweet singing bird, great for companionship.",
+    "photos": [
+      "https://example.com/tweety.jpg"
+    ],
+    "contact": {
+      "name": "Le Nichoir",
+      "phone": "450-458-2809",
+      "email": "info@lenichoir.org",
+      "address": "637 Main Road, Hudson, QC J0P 1H0, Canada"
+    },
+    "status": "Available",
+    "published_date": "2024-07-15T09:00:00Z",
+    "last_updated_date": "2024-07-15T09:00:00Z",
+    "location": {
+      "city": "Hudson",
+      "state": "QC",
+      "country": "Canada",
+      "zip_code": "J0P 1H0"
+    }
+  },
+  {
+    "id": 5,
+    "name": "Coco",
+    "species": "Dog",
+    "breed": "Poodle",
+    "age": 4,
+    "gender": "Female",
+    "size": "Medium",
+    "description": "Intelligent and playful.  Loves to learn new tricks.",
+    "photos": [
+      "https://example.com/coco1.jpg",
+      "https://example.com/coco2.jpg"
+    ],
+    "contact": {
+      "name": "SPCA Montreal",
+      "phone": "514-735-2722",
+      "email": "info@spca.com",
+      "address": "5215 Jean-Talon St W, Montreal, QC H4P 1X1, Canada"
+    },
+    "status": "Pending",
+    "published_date": "2024-07-24T14:00:00Z",
+    "last_updated_date": "2024-07-26T11:00:00Z",
+    "location": {
+      "city": "Montreal",
+      "state": "QC",
+      "country": "Canada",
+      "zip_code": "H4P 1X1"
+    }
+  }
+]
