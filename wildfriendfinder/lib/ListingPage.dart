@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
  import 'HomePage.dart';
  import 'NewListing.dart';
 import 'OneListing.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
 
 class ListingPage extends StatefulWidget {
   final String? userId;
@@ -34,6 +36,16 @@ class _ListingPageState extends State<ListingPage> {
       'listingPage',
       'accountPage'
     ];
+    List _petsList = [];
+
+    Future<void> fetchPets() async {
+      final String response =
+          await rootBundle.loadString('assets/jsonFiles/petsListing.json');
+      final List<dynamic> data = json.decode(response);
+      setState(() {
+        _petsList = data;
+      });
+    }
 
     void pageChange(int index){
       setState(() {
@@ -57,6 +69,16 @@ class _ListingPageState extends State<ListingPage> {
       ),
       body: Column(
         children: [
+          ListView.builder(
+              itemCount: _petsList.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_petsList[index]['name']),
+                  subtitle: Text('${_petsList[index]['species']} • ${_petsList[index]['breed']}'),
+                  trailing: Text('${_petsList[index]['age']} yrs'),
+                );
+              }
+          ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection('Pets').snapshots(),
