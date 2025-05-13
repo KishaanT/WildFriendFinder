@@ -33,6 +33,7 @@ class _OneListingState extends State<OneListing> {
 
         final petData = petSnapshot.data!.data() as Map<String, dynamic>;
         final ownerId = petData['ownerId'];
+        final imageAssetsPath = petData['imageAssetsPath'] ?? 'assets/default.jpg';
 
         final isOwner = widget.userId == ownerId;
 
@@ -48,6 +49,7 @@ class _OneListingState extends State<OneListing> {
 
             final userData = userSnapshot.data?.data() as Map<String, dynamic>?;
             print('OwnerId$ownerId');
+
             return Scaffold(
               appBar: AppBar(
                 title: Text(petData['name'] ?? 'Pet Details'),
@@ -78,14 +80,31 @@ class _OneListingState extends State<OneListing> {
                     )
                         : Text('User info not found'),
 
-                    SizedBox(width: 200, child: Container(
-                      height: 200,
-                      width: 200,
+                    Container(
+                      height: 300,
+                      width: double.infinity,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black,),
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    )
-                    ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          imageAssetsPath,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace){
+                            return Image.asset('assets/default.jpg', fit: BoxFit.cover,);
+                          }),
+                        ),
+                      ),
+                    // SizedBox(width: 200, child: Container(
+                    //   height: 200,
+                    //   width: 200,
+                    //   decoration: BoxDecoration(
+                    //     border: Border.all(color: Colors.black,),
+                    //   ),
+                    // )
+                    // ),
                     SizedBox(height: 10,),
                     Text('${petData['name']}', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     Text('${petData['species']} • ${petData['breed']}'),
