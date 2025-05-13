@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
         'name': breed['name'],
         'temperament': breed['temperament'] ?? 'Unknown',
         'image': breed['image']?['url'] ?? '',
+        'life-span' : breed['life_span'] ?? 'Unknown',
       };
     } else {
       throw Exception('Failed to load breeds');
@@ -91,7 +92,8 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Dog of the Day', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                    Text('Dog of the Day', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)),
+                    Divider(),
                     SizedBox(height: 10,),
                     if (dog['image'].isNotEmpty)
                       Image.network(dog['image'], height: 200),
@@ -99,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                     Text(dog['name'], style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
                     SizedBox(height: 8),
                     Text(dog['temperament'], textAlign: TextAlign.center),
+                    Text('Life Span : ' + dog['life-span'], textAlign: TextAlign.center),
                   ],
                 ),
               );
