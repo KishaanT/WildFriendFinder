@@ -5,7 +5,8 @@ class Pet {
   String? breed;
   String? sex;
   String? description;
-  String? ownerId; // Your custom userId, not Firebase UID
+  String? ownerId;
+  String? imageAssetsPath;
 
   Pet({
     this.name,
@@ -15,6 +16,7 @@ class Pet {
     this.sex,
     this.description,
     this.ownerId,
+    this.imageAssetsPath
   });
 
   Map<String, dynamic> toFirestore() {
@@ -26,6 +28,7 @@ class Pet {
       'sex': sex,
       'description': description,
       'ownerId': ownerId,
+      'imageAssetsPath': imageAssetsPath,
     };
   }
 
@@ -38,6 +41,7 @@ class Pet {
       sex: data['sex'],
       description: data['description'],
       ownerId: data['ownerId'],
+      imageAssetsPath: data['imageAssetsPath']
     );
   }
 }

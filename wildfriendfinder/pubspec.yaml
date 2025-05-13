@@ -59,7 +59,13 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/pitbull.jpg
+    - assets/dog1.jpg
+    - assets/dog2.jpg
+    - assets/dog3.jpg
+    - assets/dog4.jpg
+    - assets/dog5.jpg
+    - assets/dog6.jpg
+    - assets/default.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
