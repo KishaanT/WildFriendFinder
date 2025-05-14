@@ -24,6 +24,15 @@ class _ListingPageState extends State<ListingPage> {
 
   CollectionReference pets = FirebaseFirestore.instance.collection('Pets');
 
+  TextEditingController searchController = TextEditingController();
+  String searchTerm = '';
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +78,44 @@ class _ListingPageState extends State<ListingPage> {
       ),
       body: Column(
         children: [
-          ListView.builder(
-              itemCount: _petsList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_petsList[index]['name']),
-                  subtitle: Text('${_petsList[index]['species']} • ${_petsList[index]['breed']}'),
-                  trailing: Text('${_petsList[index]['age']} yrs'),
-                );
-              }
+          // ListView.builder(
+          //     itemCount: _petsList.length,
+          //     itemBuilder: (context, index) {
+          //       return ListTile(
+          //         title: Text(_petsList[index]['name']),
+          //         subtitle: Text('${_petsList[index]['species']} • ${_petsList[index]['breed']}'),
+          //         trailing: Text('${_petsList[index]['age']} yrs'),
+          //       );
+          //     }
+          // ),
+          Padding(padding: EdgeInsets.all(16),
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: 'Search by breed...',
+                prefixIcon: Icon(Icons.search, color: Colors.deepPurple),
+                suffixIcon: searchTerm.isNotEmpty ?
+                    IconButton(onPressed: () {
+                      setState(() {
+                        searchController.clear();
+                        searchTerm = '';
+                      });
+                    }, icon: Icon(Icons.clear)) : null,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: Colors.deepPurple),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(color: Colors.deepPurple, width: 2),
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  searchTerm = value.toLowerCase();
+                });
+              },
+            )
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
@@ -87,13 +125,39 @@ class _ListingPageState extends State<ListingPage> {
                   return Center(child: CircularProgressIndicator());
                 }
                 final pets = snapshot.data!.docs;
+
+                final filteredPets = pets.where((pet) {
+                  if(searchTerm.isEmpty) return true;
+                  final breed = (pet['breed'] ?? '').toString().toLowerCase();
+                  return breed.contains(searchTerm);
+                }).toList();
+
+                if (filteredPets.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.pets, size: 60, color: Colors.grey),
+                        SizedBox(height: 16),
+                        Text(
+                          'No pets found matching "$searchTerm"',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
                 return ListView.builder(
-                  itemCount: pets.length,
+                  itemCount: filteredPets.length,
                   itemBuilder: (context, index) {
-                    final pet = pets[index];
+                    final pet = filteredPets[index];
                     return Card(
                       margin: EdgeInsets.all(10),
                       child: ListTile(
+                        leading: pet['imageAssetsPath'] != null
+                          ? Image.asset(pet['imageAssetsPath'], width: 60, height: 60,fit: BoxFit.cover,)
+                        : Image.asset('assets/default.jpg', width: 60, height: 60,fit: BoxFit.cover,),
                         title: Text(pet['name'] ?? 'Unnamed'),
                         subtitle: Text('${pet['species']} • ${pet['breed']}'),
                         trailing: Text('${pet['age']} yrs'),
