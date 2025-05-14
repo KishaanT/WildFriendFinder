@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'EditPetPage.dart';
+import 'Maps.dart';
 
 class OneListing extends StatefulWidget {
   final String? petId;
@@ -14,14 +15,11 @@ class OneListing extends StatefulWidget {
 }
 
 class _OneListingState extends State<OneListing> {
-
-
   @override
   Widget build(BuildContext context) {
-
-
     return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance.collection('Pets').doc(widget.petId).get(),
+      future:
+          FirebaseFirestore.instance.collection('Pets').doc(widget.petId).get(),
       builder: (context, petSnapshot) {
         if (petSnapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -33,15 +31,14 @@ class _OneListingState extends State<OneListing> {
 
         final petData = petSnapshot.data!.data() as Map<String, dynamic>;
         final ownerId = petData['ownerId'];
-        final imageAssetsPath = petData['imageAssetsPath'] ?? 'assets/default.jpg';
+        final imageAssetsPath =
+            petData['imageAssetsPath'] ?? 'assets/default.jpg';
 
         final isOwner = widget.userId == ownerId;
 
         return FutureBuilder<DocumentSnapshot>(
-          future: FirebaseFirestore.instance
-              .collection('Users')
-              .doc(ownerId)
-              .get(),
+          future:
+              FirebaseFirestore.instance.collection('Users').doc(ownerId).get(),
           builder: (context, userSnapshot) {
             if (userSnapshot.connectionState == ConnectionState.waiting) {
               return Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -57,29 +54,34 @@ class _OneListingState extends State<OneListing> {
                 actions: [
                   if (isOwner)
                     IconButton(
-                      icon: Icon(Icons.edit), onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>EditPetPage(
-                          petId: widget.petId,
-                          petData: petData,
-                        )));
-                    },
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditPetPage(
+                                      petId: widget.petId,
+                                      petData: petData,
+                                    )));
+                      },
                     ),
                 ],
               ),
               body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ListView(
-                  children: [Text('Listed by:', style: TextStyle(fontWeight: FontWeight.bold)),
+                  children: [
+
                     userData != null
                         ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Name: ${userData['fName'] + " " + userData['lName']}'),
-                        Text('Email: ${userData['email']}'),
-                      ],
-                    )
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Listed by: ${userData['fName'] + " " + userData['lName']}',
+                                  style: TextStyle(fontWeight: FontWeight.bold)),
+                              // Text('Email: ${userData['email']}'),
+                            ],
+                          )
                         : Text('User info not found'),
-
                     Container(
                       height: 300,
                       width: double.infinity,
@@ -89,32 +91,56 @@ class _OneListingState extends State<OneListing> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          imageAssetsPath,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace){
-                            return Image.asset('assets/default.jpg', fit: BoxFit.cover,);
-                          }),
-                        ),
+                        child: Image.asset(imageAssetsPath, fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/default.jpg',
+                            fit: BoxFit.cover,
+                          );
+                        }),
                       ),
-                    // SizedBox(width: 200, child: Container(
-                    //   height: 200,
-                    //   width: 200,
-                    //   decoration: BoxDecoration(
-                    //     border: Border.all(color: Colors.black,),
-                    //   ),
-                    // )
-                    // ),
-                    SizedBox(height: 10,),
-                    Text('${petData['name']}', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text('${petData['name']}',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold)),
                     Text('${petData['species']} • ${petData['breed']}'),
                     SizedBox(height: 10),
                     Text('Age: ${petData['age']} years'),
                     Text('Sex: ${petData['sex']}'),
                     SizedBox(height: 20),
-                    Text('Description:', style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Description:',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     Text(petData['description'] ?? 'No description'),
                     Divider(height: 40),
+                    if (userData != null && userData['address'] != null)
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UserLocationPage(
+                                          userAddress: userData['address'],
+                                          username:
+                                              '${userData['fName']} ${userData['lName']}',
+                                        )));
+                          },
+                          icon: Icon(Icons.location_on, color: Colors.white,),
+                          label: Text('View Owner Location'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        ),
+                      )
                   ],
                 ),
               ),
@@ -125,4 +151,3 @@ class _OneListingState extends State<OneListing> {
     );
   }
 }
-
