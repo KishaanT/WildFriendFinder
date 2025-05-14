@@ -34,6 +34,31 @@ class _ListingPageState extends State<ListingPage> {
     super.dispose();
   }
 
+  List <Map<String, dynamic>> _petsList = [];
+  bool isLoading = true;
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
+  Future<void> _loadPetData() async {
+    try {
+      String jsonString = await rootBundle.loadString('assets/data.json');
+      final List<dynamic> jsonData = jsonDecode(jsonString);
+      setState(() {
+        _petList = jsonData.cast<Map<String, dynamic>>();
+      });
+    } catch (e) {
+      print('Error loading JSON: $e');
+      // Optionally show an error message
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -45,16 +70,15 @@ class _ListingPageState extends State<ListingPage> {
       'listingPage',
       'accountPage'
     ];
-    List _petsList = [];
 
-    Future<void> fetchPets() async {
-      final String response =
-          await rootBundle.loadString('assets/jsonFiles/petsListing.json');
-      final List<dynamic> data = json.decode(response);
-      setState(() {
-        _petsList = data;
-      });
-    }
+
+
+
+
+
+
+
+
 
     void pageChange(int index){
       setState(() {
@@ -68,6 +92,8 @@ class _ListingPageState extends State<ListingPage> {
             }
         );
       });
+
+
     }
 
 
@@ -78,16 +104,16 @@ class _ListingPageState extends State<ListingPage> {
       ),
       body: Column(
         children: [
-          // ListView.builder(
-          //     itemCount: _petsList.length,
-          //     itemBuilder: (context, index) {
-          //       return ListTile(
-          //         title: Text(_petsList[index]['name']),
-          //         subtitle: Text('${_petsList[index]['species']} • ${_petsList[index]['breed']}'),
-          //         trailing: Text('${_petsList[index]['age']} yrs'),
-          //       );
-          //     }
-          // ),
+          ListView.builder(
+              itemCount: _petsList.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_petsList[index]['name']),
+                  subtitle: Text('${_petsList[index]['species']} • ${_petsList[index]['breed']}'),
+                  trailing: Text('${_petsList[index]['age']} yrs'),
+                );
+              }
+          ),
           Padding(padding: EdgeInsets.all(16),
             child: TextField(
               controller: searchController,
