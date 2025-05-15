@@ -38,30 +38,36 @@ class _ListingPageState extends State<ListingPage> {
   bool isLoading = true;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
+    //  _loadPetData();
+    // if(_petsList.isEmpty){
+    //   print("Empty");
+    //   isLoading = false;
+    // }
+    // else{
+    //   print("Not Empty");
+    // }
   }
 
   // Future<void> _loadPetData() async {
   //   try {
-  //     String jsonString = await rootBundle.loadString('assets/data.json');
+  //     String jsonString = await rootBundle.loadString('assets/petsListing.json');
   //     final List<dynamic> jsonData = jsonDecode(jsonString);
   //     setState(() {
-  //       _petList = jsonData.cast<Map<String, dynamic>>();
+  //       _petsList = jsonData.cast<Map<String, dynamic>>();
   //     });
   //   } catch (e) {
   //     print('Error loading JSON: $e');
-  //     // Optionally show an error message
   //   } finally {
   //     setState(() {
-  //       _isLoading = false;
+  //       isLoading = false;
   //     });
   //   }
   // }
 
   @override
   Widget build(BuildContext context) {
-
 
     final Map<String, dynamic> index = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     int _selectIndex = index['index'];
@@ -196,6 +202,29 @@ class _ListingPageState extends State<ListingPage> {
               },
             ),
           ),
+         if(!isLoading)
+              Expanded(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                          itemCount: _petsList.length,
+                          itemBuilder: (context,index){
+                            return Card(
+                              margin: EdgeInsets.all(10),
+                              child: ListTile(
+                                leading: _petsList[index]['imageAssetsPath'] != null
+                                ? Image.asset(_petsList[index]['imageAssetsPath'], width: 60, height: 60, fit: BoxFit.cover)
+                                : Image.asset('assets/default.jpg', width: 60, height: 60, fit: BoxFit.cover),
+                                  title: Text(_petsList[index]['name'] ?? 'Unnamed'),
+                                  subtitle: Text('${_petsList[index]['species']} • ${_petsList[index]['breed']}'),
+                                  trailing: Text('${_petsList[index]['age']} yrs'),
+                              )
+                            );
+                          }
+                      )
+                    ],
+                  )
+              ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(

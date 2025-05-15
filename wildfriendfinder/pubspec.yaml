@@ -70,7 +70,7 @@ flutter:
     - assets/dog5.jpg
     - assets/dog6.jpg
     - assets/default.jpg
-    - assets/jsonFiles/petsListing.json
+    - assets/petsListing.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:
