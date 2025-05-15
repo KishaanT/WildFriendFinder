@@ -18,8 +18,8 @@ class _FirstPageState extends State<FirstPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Wild Friend Finder", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
-            Text("Find your wild friend today!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+            Text("Dog Finder", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30)),
+            Text("Find a new friend today!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
             SizedBox(height: 10,),
             ElevatedButton(
                 onPressed: () {

@@ -42,22 +42,22 @@ class _ListingPageState extends State<ListingPage> {
     super.initState();
   }
 
-  Future<void> _loadPetData() async {
-    try {
-      String jsonString = await rootBundle.loadString('assets/data.json');
-      final List<dynamic> jsonData = jsonDecode(jsonString);
-      setState(() {
-        _petList = jsonData.cast<Map<String, dynamic>>();
-      });
-    } catch (e) {
-      print('Error loading JSON: $e');
-      // Optionally show an error message
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
+  // Future<void> _loadPetData() async {
+  //   try {
+  //     String jsonString = await rootBundle.loadString('assets/data.json');
+  //     final List<dynamic> jsonData = jsonDecode(jsonString);
+  //     setState(() {
+  //       _petList = jsonData.cast<Map<String, dynamic>>();
+  //     });
+  //   } catch (e) {
+  //     print('Error loading JSON: $e');
+  //     // Optionally show an error message
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +70,6 @@ class _ListingPageState extends State<ListingPage> {
       'listingPage',
       'accountPage'
     ];
-
-
-
-
-
-
-
-
 
 
     void pageChange(int index){
@@ -100,33 +92,28 @@ class _ListingPageState extends State<ListingPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Wild Friend Finder",style: TextStyle(color: Colors.deepPurple),),
+        title: Text("Dog Finder",style: TextStyle(color: Colors.deepPurple),),
       ),
       body: Column(
         children: [
-          ListView.builder(
-              itemCount: _petsList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_petsList[index]['name']),
-                  subtitle: Text('${_petsList[index]['species']} • ${_petsList[index]['breed']}'),
-                  trailing: Text('${_petsList[index]['age']} yrs'),
-                );
-              }
-          ),
-          Padding(padding: EdgeInsets.all(16),
+          Padding(
+            padding: EdgeInsets.all(16),
             child: TextField(
               controller: searchController,
               decoration: InputDecoration(
                 hintText: 'Search by breed...',
                 prefixIcon: Icon(Icons.search, color: Colors.deepPurple),
-                suffixIcon: searchTerm.isNotEmpty ?
-                    IconButton(onPressed: () {
-                      setState(() {
-                        searchController.clear();
-                        searchTerm = '';
-                      });
-                    }, icon: Icon(Icons.clear)) : null,
+                suffixIcon: searchTerm.isNotEmpty
+                    ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      searchController.clear();
+                      searchTerm = '';
+                    });
+                  },
+                  icon: Icon(Icons.clear),
+                )
+                    : null,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide(color: Colors.deepPurple),
@@ -141,7 +128,7 @@ class _ListingPageState extends State<ListingPage> {
                   searchTerm = value.toLowerCase();
                 });
               },
-            )
+            ),
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
@@ -150,10 +137,14 @@ class _ListingPageState extends State<ListingPage> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Center(child: Text("No pets available."));
+                }
+
                 final pets = snapshot.data!.docs;
 
                 final filteredPets = pets.where((pet) {
-                  if(searchTerm.isEmpty) return true;
+                  if (searchTerm.isEmpty) return true;
                   final breed = (pet['breed'] ?? '').toString().toLowerCase();
                   return breed.contains(searchTerm);
                 }).toList();
@@ -182,21 +173,20 @@ class _ListingPageState extends State<ListingPage> {
                       margin: EdgeInsets.all(10),
                       child: ListTile(
                         leading: pet['imageAssetsPath'] != null
-                          ? Image.asset(pet['imageAssetsPath'], width: 60, height: 60,fit: BoxFit.cover,)
-                        : Image.asset('assets/default.jpg', width: 60, height: 60,fit: BoxFit.cover,),
+                            ? Image.asset(pet['imageAssetsPath'], width: 60, height: 60, fit: BoxFit.cover)
+                            : Image.asset('assets/default.jpg', width: 60, height: 60, fit: BoxFit.cover),
                         title: Text(pet['name'] ?? 'Unnamed'),
                         subtitle: Text('${pet['species']} • ${pet['breed']}'),
                         trailing: Text('${pet['age']} yrs'),
                         onTap: () {
-                          // Navigator.pushNamed(
-                          //     context,
-                          //     'oneListingPage',
-                          // arguments: {
-                          //       'petId': pet.id
-                          // });
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => OneListing(petId: pet.id, userId: widget.userId)),
+                            MaterialPageRoute(
+                              builder: (context) => OneListing(
+                                petId: pet.id,
+                                userId: widget.userId,
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -206,7 +196,6 @@ class _ListingPageState extends State<ListingPage> {
               },
             ),
           ),
-          // Centered "New Listing" Button
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(
@@ -215,7 +204,7 @@ class _ListingPageState extends State<ListingPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NewListing(ownerId: widget.userId), // Pass ownerId here
+                      builder: (context) => NewListing(ownerId: widget.userId),
                     ),
                   );
                 },
@@ -225,6 +214,7 @@ class _ListingPageState extends State<ListingPage> {
           ),
         ],
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.deepPurple,),label: "Home"),

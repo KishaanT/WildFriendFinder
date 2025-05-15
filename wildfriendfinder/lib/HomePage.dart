@@ -4,6 +4,8 @@ import 'package:wildfriendfinder/AccountPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:wildfriendfinder/NotificationsPage.dart';
+
 class HomePage extends StatefulWidget {
   final String? userId;
   final int index;
@@ -102,6 +104,10 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: 8),
                     Text(dog['temperament'], textAlign: TextAlign.center),
                     Text('Life Span : ' + dog['life-span'], textAlign: TextAlign.center),
+                    SizedBox(height: 20,),
+                    ElevatedButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> NotificationsPage(userId: widget.userId)));
+                    }, child: Text('Notifications'))
                   ],
                 ),
               );

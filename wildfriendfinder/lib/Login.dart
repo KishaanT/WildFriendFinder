@@ -117,7 +117,7 @@ class _LoginState extends State<Login> {
                      await login(usernameController.text.trim(), passwordController.text.trim());
                      clearController();
                   }, child: Text('Login', style: TextStyle(color: Colors.black)),),
-
+                  SizedBox(height: 10),
                 ],
               )
           ),

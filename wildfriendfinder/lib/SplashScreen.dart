@@ -99,15 +99,28 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      color: Colors.grey,
-      child: Text(
-        "Splash Screen to change",
-        style: TextStyle(fontSize: 18, color: Colors.white),
+    return Scaffold(
+      backgroundColor:
+      Colors.white, // Set background color as needed,  I've set it to white.
+      body: Center( // Center the content.
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Dog Finder",
+              style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Icon(
+              Icons.pets,
+              size: 100,
+              color: Colors.black,
+            ),
+          ],
+        ),
       ),
-      height: 100,
-      width: 300,
     );
   }
 }

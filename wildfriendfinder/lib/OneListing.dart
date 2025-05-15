@@ -15,6 +15,71 @@ class OneListing extends StatefulWidget {
 }
 
 class _OneListingState extends State<OneListing> {
+  bool _isRequestPending = false;
+  bool _checkingRequest = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    checkRequestStatus();
+  }
+
+  Future<void> checkRequestStatus() async {
+    try {
+      final petRequestSnapshot = await FirebaseFirestore.instance
+          .collection('PetRequests')
+          .where('petId', isEqualTo: widget.petId)
+          .where('requesterId', isEqualTo: widget.userId)
+          .where('status', isEqualTo: 'pending')
+          .get();
+      setState(() {
+        _isRequestPending = petRequestSnapshot.docs.isNotEmpty;
+        _checkingRequest = false;
+      });
+    } catch (e) {
+      print('Error checking request status: $e');
+      setState(() {
+        _checkingRequest = false;
+      });
+    }
+  }
+
+  Future<void> sendRequest(String ownerId) async {
+    try {
+      final userDoc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(widget.userId)
+          .get();
+      if(!userDoc.exists) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('User data not found')),
+        );
+        return;
+      }
+      final userData = userDoc.data() as Map<String, dynamic>;
+      await FirebaseFirestore.instance.collection('PetRequests')
+      .add({
+        'petId': widget.petId,
+        'ownerId': ownerId,
+        'requesterId': widget.userId,
+        'requesterName': '${userData['fName']} ${userData['lName']}',
+        'requesterEmail': userData['email'],
+        'requesterPhone': userData['phone'],
+        'status': 'pending',
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+      setState(() {
+        _isRequestPending = true;
+      });
+    } catch (e) {
+      print('Error sending request: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to send request')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
@@ -71,13 +136,14 @@ class _OneListingState extends State<OneListing> {
                 padding: const EdgeInsets.all(16.0),
                 child: ListView(
                   children: [
-
                     userData != null
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Listed by: ${userData['fName'] + " " + userData['lName']}',
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text(
+                                  'Listed by: ${userData['fName'] + " " + userData['lName']}',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
                               // Text('Email: ${userData['email']}'),
                             ],
                           )
@@ -115,6 +181,27 @@ class _OneListingState extends State<OneListing> {
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     Text(petData['description'] ?? 'No description'),
                     Divider(height: 40),
+                    if (!isOwner)
+                      Center(
+                        child: _checkingRequest ? CircularProgressIndicator() :
+                        ElevatedButton(onPressed:_isRequestPending
+                            ? null
+                            : () => sendRequest(ownerId),
+                          child: Text(_isRequestPending ? 'Request Pending' : 'Request This Pet'),
+                        style:  ElevatedButton.styleFrom(
+                          backgroundColor: _isRequestPending
+                              ? Colors.grey
+                              : Colors.deepPurple,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        ),
+                      ),
+                    SizedBox(height: 10,),
                     if (userData != null && userData['address'] != null)
                       Center(
                         child: ElevatedButton.icon(
@@ -128,7 +215,10 @@ class _OneListingState extends State<OneListing> {
                                               '${userData['fName']} ${userData['lName']}',
                                         )));
                           },
-                          icon: Icon(Icons.location_on, color: Colors.white,),
+                          icon: Icon(
+                            Icons.location_on,
+                            color: Colors.white,
+                          ),
                           label: Text('View Owner Location'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.deepPurple,
