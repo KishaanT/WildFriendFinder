@@ -43,7 +43,7 @@ class _ListingPageState extends State<ListingPage> {
   void initState() {
     super.initState();
     _loadSavedPets();
-    }
+  }
 
   Future<void> _loadSavedPets() async {
     try {
