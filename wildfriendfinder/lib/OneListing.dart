@@ -114,7 +114,7 @@ class _OneListingState extends State<OneListing> {
 
             return Scaffold(
               appBar: AppBar(
-                title: Text(petData['name'] ?? 'Pet Details'),
+                title: Text(petData['name'] ?? 'Pet Details', style: TextStyle(color: Colors.white),),
                 backgroundColor: Colors.deepPurple,
                 actions: [
                   if (isOwner)

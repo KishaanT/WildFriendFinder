@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          "Wild Friend Finder",
+          "Dog Finder",
           style: TextStyle(color: Colors.deepPurple),
         ),
       ),

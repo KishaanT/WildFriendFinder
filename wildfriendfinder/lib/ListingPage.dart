@@ -20,12 +20,14 @@ class ListingPage extends StatefulWidget {
 
 class _ListingPageState extends State<ListingPage> {
 
-  final Stream<QuerySnapshot> _petStream = FirebaseFirestore.instance.collection('Pets').snapshots();
+  // final Stream<QuerySnapshot> _petStream = FirebaseFirestore.instance.collection('Pets').snapshots();
 
   CollectionReference pets = FirebaseFirestore.instance.collection('Pets');
 
   TextEditingController searchController = TextEditingController();
   String searchTerm = '';
+
+  bool isGridView = false;
 
   @override
   void dispose() {
@@ -100,6 +102,13 @@ class _ListingPageState extends State<ListingPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text("Dog Finder",style: TextStyle(color: Colors.deepPurple),),
+        actions: [
+          IconButton(onPressed: (){
+            setState(() {
+              isGridView = !isGridView;
+            });
+          }, icon: Icon(isGridView ? Icons.view_list : Icons.grid_view, color: Colors.deepPurple,))
+        ],
       ),
       body: Column(
         children: [
@@ -172,7 +181,53 @@ class _ListingPageState extends State<ListingPage> {
                   );
                 }
 
-                return ListView.builder(
+                return isGridView
+                ? GridView.builder(
+                  padding: EdgeInsets.all(10),
+                    itemCount: filteredPets.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.7,
+                    ),
+                    itemBuilder: (context, index) {
+                      final pet = filteredPets[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => OneListing(petId: pet.id, userId: widget.userId,)));
+                        },
+                        child: Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: pet['imageAssetsPath'] != null
+                                    ? Image.asset(pet['imageAssetsPath'], fit: BoxFit.cover)
+                                    : Image.asset('assets/default.jpg', fit: BoxFit.cover),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.all(8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(pet['name'] ?? 'Unnamed', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    Text('Breed: ${pet['breed']}'),
+                                  ]
+                                ),
+                              )
+                            ]
+                          ),
+                        ),
+                      );
+                    }
+                )
+                :
+                ListView.builder(
                   itemCount: filteredPets.length,
                   itemBuilder: (context, index) {
                     final pet = filteredPets[index];
@@ -183,7 +238,7 @@ class _ListingPageState extends State<ListingPage> {
                             ? Image.asset(pet['imageAssetsPath'], width: 60, height: 60, fit: BoxFit.cover)
                             : Image.asset('assets/default.jpg', width: 60, height: 60, fit: BoxFit.cover),
                         title: Text(pet['name'] ?? 'Unnamed'),
-                        subtitle: Text('${pet['species']} • ${pet['breed']}'),
+                        subtitle: Text('Breed: ${pet['breed']}'),
                         trailing: Text('${pet['age']} yrs'),
                         onTap: () {
                           Navigator.push(
