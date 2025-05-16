@@ -29,6 +29,9 @@ class _SavedPageState extends State<SavedPage> {
   List<String> _savedPets = [];
   int _selectIndex = 2; // Initialize _selectIndex for SavedPage
 
+  // Store the future here so it's not re-created on rebuild
+  Future<void>? _savedPetsFuture;
+
   @override
   void dispose() {
     searchController.dispose();
@@ -38,32 +41,43 @@ class _SavedPageState extends State<SavedPage> {
   @override
   void initState() {
     super.initState();
-    _loadSavedPets();
+    // Initialize the future in initState, not in the build method
+    _savedPetsFuture = _loadSavedPets();
   }
 
   Future<void> _loadSavedPets() async {
+    print('Starting _loadSavedPets for user: ${widget.userId}');
     try {
       CollectionReference usersRef =
       FirebaseFirestore.instance.collection('Users');
+      print('Fetching user document...');
       DocumentSnapshot userDoc = await usersRef.doc(widget.userId).get();
+      print('User document fetched.');
 
       if (userDoc.exists) {
         Map<String, dynamic>? data = userDoc.data() as Map<String, dynamic>?;
         if (data != null && data.containsKey('savedPets')) {
           _savedPets = List<String>.from(data['savedPets']);
+          print('Saved pets loaded: $_savedPets');
         } else {
           _savedPets = [];
+          print('No savedPets field found for user.');
         }
       } else {
         _savedPets = [];
+        print('User document does not exist.');
       }
     } catch (e) {
       print('Error loading saved pets: $e');
       _savedPets = [];
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      // Only call setState if the widget is still mounted
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+          print('isLoading set to false.');
+        });
+      }
     }
   }
 
@@ -75,7 +89,7 @@ class _SavedPageState extends State<SavedPage> {
     List<String> _widgetOption = [
       'homePage',
       'listingPage',
-      'savedPage', // Ensure 'savedPage' is in the list
+      'savedPage',
       'notifications',
       'accountPage'
     ];
@@ -149,10 +163,9 @@ class _SavedPageState extends State<SavedPage> {
           ),
           Expanded(
             child:
-            // Use a FutureBuilder to first get the saved pets, then use a StreamBuilder
-            // to listen to changes in the 'Pets' collection.
+            // Use a FutureBuilder with the saved future from initState
             FutureBuilder<void>(
-              future: _loadSavedPets(), // A Future that completes when _loadSavedPets is done.
+              future: _savedPetsFuture,
               builder: (context, futureSnapshot) {
                 if (futureSnapshot.connectionState ==
                     ConnectionState.waiting) {
@@ -316,31 +329,6 @@ class _SavedPageState extends State<SavedPage> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          NewListing(ownerId: widget.userId),
-                    ),
-                  );
-                },
-                child: Text('New Listing'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
-                  foregroundColor: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -386,4 +374,3 @@ class _SavedPageState extends State<SavedPage> {
     );
   }
 }
-

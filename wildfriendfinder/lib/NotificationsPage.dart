@@ -285,17 +285,18 @@ class _NotificationsPageState extends State<NotificationsPage> {
               label: "List"),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.notifications,
-                color: Colors.deepPurple,
-              ),
-              label: "Notifications"),
-          BottomNavigationBarItem(
-              icon: Icon(
                 Icons.bookmark,
                 color: Colors.deepPurple,
               ),
               label: "Saved"
           ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.notifications,
+                color: Colors.deepPurple,
+              ),
+              label: "Notifications"),
+
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle,

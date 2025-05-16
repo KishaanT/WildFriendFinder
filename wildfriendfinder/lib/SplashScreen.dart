@@ -126,7 +126,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Dog Finder",
+              "Your Saved Listings",
               style: TextStyle(
                   fontSize: 24,
                   color: Colors.black,
