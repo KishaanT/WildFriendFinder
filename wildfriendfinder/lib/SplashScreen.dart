@@ -40,11 +40,11 @@ class WildFriendFinder extends StatelessWidget {
         // 'homePage' : (context) => HomePage(),
         // 'homePage' : (context) => HomePage(userId: null,index: 0,),
         'listingPage': (context) {
-          final args = ModalRoute.of(context)!.settings.arguments
-              as Map<String, dynamic>;
+          final args = ModalRoute.of(context)?.settings.arguments
+              as Map<String, dynamic>? ?? <String,dynamic>{};
           return ListingPage(
-            userId: args['userId'],
-            index: args['index'],
+            userId: args?['userId'],
+            index: args?['index'],
           );
         },
         'newListingPage': (context) => NewListing(ownerId: null),
