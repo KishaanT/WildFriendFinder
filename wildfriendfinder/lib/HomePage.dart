@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
 
     int _selectIndex = widget.index;
     print(_selectIndex);
-    List<String> _widgetOption = ['homePage', 'listingPage', 'accountPage'];
+    List<String> _widgetOption = ['homePage', 'listingPage', 'notifications', 'accountPage'];
 
     void pageChange(int index) {
       setState(() {
@@ -105,9 +105,7 @@ class _HomePageState extends State<HomePage> {
                     Text(dog['temperament'], textAlign: TextAlign.center),
                     Text('Life Span : ' + dog['life-span'], textAlign: TextAlign.center),
                     SizedBox(height: 20,),
-                    ElevatedButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> NotificationsPage(userId: widget.userId)));
-                    }, child: Text('Notifications'))
+
                   ],
                 ),
               );
@@ -127,6 +125,12 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.deepPurple,
               ),
               label: "List"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.notifications,
+                color: Colors.deepPurple,
+              ),
+              label: "Notifications"),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle,

@@ -119,7 +119,7 @@ class _OneListingState extends State<OneListing> {
                 actions: [
                   if (isOwner)
                     IconButton(
-                      icon: Icon(Icons.edit),
+                      icon: Icon(Icons.edit, color: Colors.white,),
                       onPressed: () {
                         Navigator.push(
                             context,

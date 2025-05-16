@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wildfriendfinder/User.dart';
 import 'dart:async';
-
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wildfriendfinder/HomePage.dart';
 
 class Login extends StatefulWidget {
@@ -18,6 +18,52 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController = TextEditingController();
   String? userLoggedIn;
 
+  // Notifications
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeNotifications();
+  }
+
+  // Initialize the notification plugin
+  void _initializeNotifications() async {
+    var initializationSettingsAndroid =
+    new AndroidInitializationSettings('@mipmap/ic_launcher'); // icon for Android
+    var initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  // Function to show a simple notification
+  Future<void> _showNotification() async {
+    var androidDetails = AndroidNotificationDetails(
+      'channel_id', // Channel ID
+      'channel_name', // Channel name
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+    var generalNotificationDetails =
+    NotificationDetails(android: androidDetails);
+
+    await flutterLocalNotificationsPlugin.show(
+      0, // Notification ID
+      'Welcome Back!', // Notification title
+      'New Request Notification', // Notification body
+      generalNotificationDetails,
+    );
+  }
+
+  Future<bool> checkUserRequests(String userId) async {
+    QuerySnapshot<Map<String, dynamic>> requests = await FirebaseFirestore.instance.collection('PetRequests')
+        .where('ownerId', isEqualTo: userId)
+        .where('status', isEqualTo: 'pending')
+        .get();
+    return requests.docs.isNotEmpty;
+  }
 
   Future<void> login(String username, String password) async {
     try {
@@ -27,11 +73,16 @@ class _LoginState extends State<Login> {
           .where('username', isEqualTo: username)
           .where('password', isEqualTo: password)
           .get();
+
       if (login.docs.isNotEmpty) {
         print('Login Successful');
-
         String userId = login.docs.first.id;
 
+        bool checkRequest = await checkUserRequests(userId);
+        if (checkRequest) {
+          print('Has notifications');
+          await _showNotification();
+        }
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -116,6 +167,7 @@ class _LoginState extends State<Login> {
                   ElevatedButton(onPressed: () async {
                      await login(usernameController.text.trim(), passwordController.text.trim());
                      clearController();
+                     // _showNotification();
                   }, child: Text('Login', style: TextStyle(color: Colors.black)),),
                   SizedBox(height: 10),
                 ],

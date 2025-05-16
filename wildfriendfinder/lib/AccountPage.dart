@@ -193,9 +193,11 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    int _selectIndex = 0;
+
+    final Map<String, dynamic> index = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    int _selectIndex = index['index'];
     print(_selectIndex);
-    List<String> _widgetOption = ['homePage', 'listingPage', 'accountPage'];
+    List<String> _widgetOption = ['homePage', 'listingPage', 'notifications', 'accountPage'];
 
     void pageChange(int index) {
       setState(() {
@@ -325,10 +327,10 @@ class _AccountPageState extends State<AccountPage> {
                 ],
               ),
               SizedBox(height: 20),
-              Text(
-                'UserID: ${widget.userId}',
-                style: TextStyle(fontSize: 16),
-              ),
+              // Text(
+              //   'UserID: ${widget.userId}',
+              //   style: TextStyle(fontSize: 16),
+              // ),
 
             ],
           ),
@@ -348,6 +350,12 @@ class _AccountPageState extends State<AccountPage> {
                 color: Colors.deepPurple,
               ),
               label: "List"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.notifications,
+                color: Colors.deepPurple,
+              ),
+              label: "Notifications"),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.account_circle,

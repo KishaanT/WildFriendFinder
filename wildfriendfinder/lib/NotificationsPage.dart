@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 
 class NotificationsPage extends StatefulWidget {
   final String? userId;
-  const NotificationsPage({super.key, required this.userId});
+  final int? index;
+  const NotificationsPage({super.key, required this.userId, required this.index});
 
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
@@ -50,9 +51,22 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> index = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    int _selectIndex = index['index'] ;
+    print(_selectIndex);
+    List<String> _widgetOption = ['homePage', 'listingPage', 'notifications', 'accountPage'];
+
+    void pageChange(int index) {
+      setState(() {
+        _selectIndex = index;
+        Navigator.pushNamed(context, _widgetOption[index],
+            arguments: {'index': _selectIndex, 'userId': widget.userId});
+      });
+    }
     print('Notifications Page - Current UserId: ${widget.userId}');
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Notifications'),
         backgroundColor: Colors.deepPurple,
       ),
@@ -248,6 +262,39 @@ class _NotificationsPageState extends State<NotificationsPage> {
             },
           );
         },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: Colors.deepPurple,
+              ),
+              label: "Home"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.list,
+                color: Colors.deepPurple,
+              ),
+              label: "List"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.notifications,
+                color: Colors.deepPurple,
+              ),
+              label: "Notifications"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.account_circle,
+                color: Colors.deepPurple,
+              ),
+              label: "Account")
+        ],
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _selectIndex,
+        selectedItemColor: Colors.indigoAccent,
+        onTap: pageChange,
+        iconSize: 35,
       ),
     );
   }

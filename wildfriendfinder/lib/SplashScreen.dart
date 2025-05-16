@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wildfriendfinder/NotificationsPage.dart';
 import 'FirstPage.dart';
 import 'Login.dart';
 import 'SignUp.dart';
@@ -48,13 +49,13 @@ class WildFriendFinder extends StatelessWidget {
         },
         'newListingPage': (context) => NewListing(ownerId: null),
         'oneListingPage': (context) {
-    final args = ModalRoute.of(context)!.settings.arguments
-    as Map<String, dynamic>;
-    return OneListing(
-    userId: args['userId'],
-    petId:null,
-    );
-    },
+          final args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return OneListing(
+            userId: args['userId'],
+            petId: null,
+          );
+        },
         // 'accountPage' : (context) => AccountPage(userId: null,),
         'accountPage': (context) {
           final args = ModalRoute.of(context)!.settings.arguments
@@ -68,6 +69,14 @@ class WildFriendFinder extends StatelessWidget {
           final args = ModalRoute.of(context)!.settings.arguments
               as Map<String, dynamic>;
           return HomePage(
+            userId: args['userId'],
+            index: args['index'],
+          );
+        },
+        'notifications': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments
+          as Map<String, dynamic>;
+          return NotificationsPage(
             userId: args['userId'],
             index: args['index'],
           );
@@ -100,15 +109,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-      Colors.white, // Set background color as needed,  I've set it to white.
-      body: Center( // Center the content.
+      backgroundColor: Colors
+          .white, // Set background color as needed,  I've set it to white.
+      body: Center(
+        // Center the content.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               "Dog Finder",
-              style: TextStyle(fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 10,

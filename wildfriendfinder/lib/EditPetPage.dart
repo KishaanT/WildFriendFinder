@@ -230,7 +230,7 @@ class _EditPetPageState extends State<EditPetPage> {
                 onPressed: () {
                   deletePet();
                 },
-                icon: Icon(Icons.delete))
+                icon: Icon(Icons.delete, color: Colors.red,))
           ],
         ),
         body: isLoading
@@ -373,16 +373,6 @@ class _EditPetPageState extends State<EditPetPage> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        Center(
-                          child: TextButton.icon(
-                            icon: Icon(Icons.delete),
-                            label: Text('Delete Listing'),
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.red,
-                            ),
-                            onPressed: deletePet,
-                          ),
-                        ),
                       ],
                     )),
               ));

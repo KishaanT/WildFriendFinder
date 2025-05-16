@@ -68,6 +68,7 @@ class _ListingPageState extends State<ListingPage> {
     List<String> _widgetOption = [
       'homePage',
       'listingPage',
+      'notifications',
       'accountPage'
     ];
 
@@ -219,6 +220,7 @@ class _ListingPageState extends State<ListingPage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.deepPurple,),label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.list,color: Colors.deepPurple,),label: "List"),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications,color: Colors.deepPurple,),label: "Notifications"),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle,color: Colors.deepPurple,),label: "Account")
         ],
         type: BottomNavigationBarType.fixed,
