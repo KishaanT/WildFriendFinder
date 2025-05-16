@@ -85,6 +85,7 @@ class _HomePageState extends State<HomePage> {
     List<String> _widgetOption = [
       'homePage',
       'listingPage',
+      'savedPage',
       'notifications',
       'accountPage'
     ];
@@ -190,6 +191,13 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.deepPurple,
               ),
               label: "List"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.bookmark,
+                color: Colors.deepPurple,
+              ),
+              label: "Saved"
+          ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.notifications,

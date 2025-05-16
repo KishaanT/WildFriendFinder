@@ -197,7 +197,13 @@ class _AccountPageState extends State<AccountPage> {
     final Map<String, dynamic> index = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     int _selectIndex = index['index'];
     print(_selectIndex);
-    List<String> _widgetOption = ['homePage', 'listingPage', 'notifications', 'accountPage'];
+    List<String> _widgetOption = [
+      'homePage',
+      'listingPage',
+      'savedPage',
+      'notifications',
+      'accountPage'
+    ];
 
     void pageChange(int index) {
       setState(() {
@@ -350,6 +356,13 @@ class _AccountPageState extends State<AccountPage> {
                 color: Colors.deepPurple,
               ),
               label: "List"),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.bookmark,
+                color: Colors.deepPurple,
+              ),
+              label: "Saved"
+          ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.notifications,
