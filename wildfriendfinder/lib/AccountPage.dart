@@ -169,8 +169,8 @@ class _AccountPageState extends State<AccountPage> {
 
       // Navigate to login page
       Navigator.of(context).pushNamedAndRemoveUntil(
-        'loginPage', // Replace with your actual login route name
-        (Route<dynamic> route) => false, // This removes all previous routes
+        'loginPage',
+        (Route<dynamic> route) => false,
       );
     } catch (e) {
       Navigator.pop(context);
@@ -227,7 +227,7 @@ class _AccountPageState extends State<AccountPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Profile icon and welcome text at the top
+              // Profile icon
               Column(
                 children: [
                   Row(
@@ -266,7 +266,6 @@ class _AccountPageState extends State<AccountPage> {
                 ],
               ),
 
-              // Form fields
               TextField(
                 controller: usernameController,
                 decoration: InputDecoration(labelText: 'Username'),
@@ -304,7 +303,6 @@ class _AccountPageState extends State<AccountPage> {
               ),
               SizedBox(height: 20),
 
-              // Action buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -333,11 +331,6 @@ class _AccountPageState extends State<AccountPage> {
                 ],
               ),
               SizedBox(height: 20),
-              // Text(
-              //   'UserID: ${widget.userId}',
-              //   style: TextStyle(fontSize: 16),
-              // ),
-
             ],
           ),
         ),

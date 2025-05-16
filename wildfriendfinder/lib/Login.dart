@@ -89,15 +89,6 @@ class _LoginState extends State<Login> {
             builder: (context) => HomePage(userId: userId,index:0),
           ),
         );
-
-        // Navigator.pushNamed(
-        //     context,
-        //     'homePage',
-        //   arguments: {
-        //       'index': 0,
-        //     'userId' : userLoggedIn,
-        //   }
-        // );
       } else {
         showLoginError("Invalid username or password");
       }

@@ -27,9 +27,8 @@ class _SavedPageState extends State<SavedPage> {
   bool isGridView = false;
   bool isLoading = true;
   List<String> _savedPets = [];
-  int _selectIndex = 2; // Initialize _selectIndex for SavedPage
+  int _selectIndex = 2;
 
-  // Store the future here so it's not re-created on rebuild
   Future<void>? _savedPetsFuture;
 
   @override
@@ -41,7 +40,6 @@ class _SavedPageState extends State<SavedPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize the future in initState, not in the build method
     _savedPetsFuture = _loadSavedPets();
   }
 
@@ -71,7 +69,6 @@ class _SavedPageState extends State<SavedPage> {
       print('Error loading saved pets: $e');
       _savedPets = [];
     } finally {
-      // Only call setState if the widget is still mounted
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -85,7 +82,6 @@ class _SavedPageState extends State<SavedPage> {
   Widget build(BuildContext context) {
     final Map<String, dynamic> index =
     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    //int _selectIndex = index['index'];  //remove this
     List<String> _widgetOption = [
       'homePage',
       'listingPage',
@@ -163,7 +159,6 @@ class _SavedPageState extends State<SavedPage> {
           ),
           Expanded(
             child:
-            // Use a FutureBuilder with the saved future from initState
             FutureBuilder<void>(
               future: _savedPetsFuture,
               builder: (context, futureSnapshot) {
@@ -171,13 +166,12 @@ class _SavedPageState extends State<SavedPage> {
                     ConnectionState.waiting) {
                   return Center(
                       child:
-                      CircularProgressIndicator()); // Show loading until saved pets are loaded
+                      CircularProgressIndicator());
                 } else if (futureSnapshot.hasError) {
                   return Center(
                       child: Text(
-                          'Error: ${futureSnapshot.error}')); // Show error if loading saved pets fails
+                          'Error: ${futureSnapshot.error}'));
                 } else {
-                  // Once _loadSavedPets is complete, use a StreamBuilder to listen to 'Pets'
                   return StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('Pets')
@@ -186,18 +180,17 @@ class _SavedPageState extends State<SavedPage> {
                       if (snapshot.connectionState ==
                           ConnectionState.waiting) {
                         return Center(
-                            child: CircularProgressIndicator()); // Show loading for pets data
+                            child: CircularProgressIndicator());
                       }
                       if (!snapshot.hasData ||
                           snapshot.data!.docs.isEmpty) {
                         return Center(
                             child: Text(
-                                "No pets available.")); //  no pets in general
+                                "No pets available."));
                       }
 
                       final pets = snapshot.data!.docs;
 
-                      // Filter pets based on both search term and savedPets
                       final filteredPets = pets.where((pet) {
                         final petId = pet.id;
                         final breed =

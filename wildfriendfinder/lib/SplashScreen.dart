@@ -38,8 +38,6 @@ class WildFriendFinder extends StatelessWidget {
         'firstPage': (context) => FirstPage(),
         'loginPage': (context) => Login(),
         'signUpPage': (context) => SignUp(),
-        // 'homePage' : (context) => HomePage(),
-        // 'homePage' : (context) => HomePage(userId: null,index: 0,),
         'listingPage': (context) {
           final args = ModalRoute.of(context)?.settings.arguments
               as Map<String, dynamic>? ?? <String,dynamic>{};
@@ -57,7 +55,6 @@ class WildFriendFinder extends StatelessWidget {
             petId: null,
           );
         },
-        // 'accountPage' : (context) => AccountPage(userId: null,),
         'accountPage': (context) {
           final args = ModalRoute.of(context)!.settings.arguments
               as Map<String, dynamic>;
@@ -119,9 +116,8 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors
-          .white, // Set background color as needed,  I've set it to white.
+          .white,
       body: Center(
-        // Center the content.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

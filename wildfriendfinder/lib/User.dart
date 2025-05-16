@@ -17,7 +17,6 @@ class User {
 
   factory User.fromFirestore(Map<String, dynamic> data, String id) {
     return User(
-      // userId: data['userId'] as int?,
       fName: data['fName'] as String?,
       lName: data['lName'] as String?,
       username: data['username'] as String?,

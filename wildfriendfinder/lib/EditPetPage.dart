@@ -138,7 +138,6 @@ class _EditPetPageState extends State<EditPetPage> {
     });
 
     try {
-      // Delete the pet
       await FirebaseFirestore.instance
           .collection('Pets')
           .doc(widget.petId)
@@ -154,7 +153,6 @@ class _EditPetPageState extends State<EditPetPage> {
       Navigator.pop(context);
       Navigator.pop(context);
     } catch (e) {
-      // Error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error deleting listing: ${e.toString()}'),
@@ -242,7 +240,6 @@ class _EditPetPageState extends State<EditPetPage> {
                 child: Form(
                     key: _formKey,
                     child: Column(
-                      // crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
