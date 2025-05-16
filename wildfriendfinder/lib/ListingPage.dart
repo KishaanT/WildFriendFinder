@@ -294,6 +294,15 @@ class _ListingPageState extends State<ListingPage> {
                   );
                 },
                 child: Text('New Listing'),
+                style:  ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
               ),
             ),
           ),

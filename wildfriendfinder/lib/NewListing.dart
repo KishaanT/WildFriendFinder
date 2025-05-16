@@ -241,7 +241,9 @@ class _NewListingState extends State<NewListing> {
                       decoration: InputDecoration(
                         labelText: 'Description',
                         border: OutlineInputBorder(),
+                        alignLabelWithHint: true
                       ),
+                      maxLines: 5,
                     ),
                   ),
                   SizedBox(

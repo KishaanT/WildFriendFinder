@@ -143,11 +143,12 @@ class _OneListingState extends State<OneListing> {
                               Text(
                                   'Listed by: ${userData['fName'] + " " + userData['lName']}',
                                   style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                               // Text('Email: ${userData['email']}'),
                             ],
                           )
                         : Text('User info not found'),
+                    SizedBox(height: 10,),
                     Container(
                       height: 300,
                       width: double.infinity,
@@ -172,15 +173,46 @@ class _OneListingState extends State<OneListing> {
                     Text('${petData['name']}',
                         style: TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold)),
-                    Text('${petData['species']} • ${petData['breed']}'),
+                    Text('Breed: ${petData['breed']}', style: TextStyle(fontSize: 18),),
                     SizedBox(height: 10),
-                    Text('Age: ${petData['age']} years'),
-                    Text('Sex: ${petData['sex']}'),
+                    Text('Age: ${petData['age']} years',style: TextStyle(fontSize: 18),),
+                    Text('Sex: ${petData['sex']}',style: TextStyle(fontSize: 18),),
                     SizedBox(height: 20),
                     Text('Description:',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    Text(petData['description'] ?? 'No description'),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                    Text(petData['description'] ?? 'No description',style: TextStyle(fontSize: 18),),
                     Divider(height: 40),
+                    SizedBox(height: 10,),
+                    if (userData != null && userData['address'] != null)
+                      Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UserLocationPage(
+                                      userAddress: userData['address'],
+                                      username:
+                                      '${userData['fName']} ${userData['lName']}',
+                                    )));
+                          },
+                          icon: Icon(
+                            Icons.location_on,
+                            color: Colors.white,
+                          ),
+                          label: Text('View Owner Location'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                        ),
+                      ),
+                    SizedBox(height: 10,),
                     if (!isOwner)
                       Center(
                         child: _checkingRequest ? CircularProgressIndicator() :
@@ -194,43 +226,13 @@ class _OneListingState extends State<OneListing> {
                               : Colors.deepPurple,
                           foregroundColor: Colors.white,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 15),
+                              horizontal: 30, vertical: 10),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                         ),
                         ),
                       ),
-                    SizedBox(height: 10,),
-                    if (userData != null && userData['address'] != null)
-                      Center(
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserLocationPage(
-                                          userAddress: userData['address'],
-                                          username:
-                                              '${userData['fName']} ${userData['lName']}',
-                                        )));
-                          },
-                          icon: Icon(
-                            Icons.location_on,
-                            color: Colors.white,
-                          ),
-                          label: Text('View Owner Location'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
-                            foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                        ),
-                      )
                   ],
                 ),
               ),
