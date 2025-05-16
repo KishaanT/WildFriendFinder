@@ -12,6 +12,7 @@ import 'NewListing.dart';
 import 'OneListing.dart';
 import 'dart:async';
 import 'AccountPage.dart';
+import 'SavedPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -81,6 +82,14 @@ class WildFriendFinder extends StatelessWidget {
             index: args['index'],
           );
         },
+        'savedPage': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments
+          as Map<String, dynamic>;
+          return SavedPage(
+              userId: args['userId'],
+              index: args['index'],
+          );
+        }
       },
     );
   }

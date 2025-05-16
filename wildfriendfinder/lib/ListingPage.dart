@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
- import 'HomePage.dart';
- import 'NewListing.dart';
+import 'HomePage.dart';
+import 'NewListing.dart';
 import 'OneListing.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -10,16 +10,17 @@ class ListingPage extends StatefulWidget {
   final String? userId;
   final int? index;
 
-  const ListingPage({super.key,
+  const ListingPage({
+    super.key,
     required this.userId,
-    required this.index,});
+    required this.index,
+  });
 
   @override
   State<ListingPage> createState() => _ListingPageState();
 }
 
 class _ListingPageState extends State<ListingPage> {
-
   // final Stream<QuerySnapshot> _petStream = FirebaseFirestore.instance.collection('Pets').snapshots();
 
   CollectionReference pets = FirebaseFirestore.instance.collection('Pets');
@@ -28,86 +29,135 @@ class _ListingPageState extends State<ListingPage> {
   String searchTerm = '';
 
   bool isGridView = false;
+  //  List <Map<String, dynamic>> _petsList = [];
+  bool isLoading = true;
+  List<dynamic> _savedPets = [];
 
   @override
   void dispose() {
-    // TODO: implement dispose
     searchController.dispose();
     super.dispose();
   }
 
-  List <Map<String, dynamic>> _petsList = [];
-  bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
-    //  _loadPetData();
-    // if(_petsList.isEmpty){
-    //   print("Empty");
-    //   isLoading = false;
-    // }
-    // else{
-    //   print("Not Empty");
-    // }
+    _loadSavedPets();
+    }
+
+  Future<void> _loadSavedPets() async {
+    try {
+      CollectionReference collectionRef =
+      FirebaseFirestore.instance.collection('Users');
+
+      DocumentSnapshot documentSnapshot =
+      await collectionRef.doc(widget.userId).get();
+
+      if (documentSnapshot.exists) {
+        Map<String, dynamic>? data =
+        documentSnapshot.data() as Map<String, dynamic>?;
+
+        if (data != null && data.containsKey('savedPets')) {
+          List<dynamic> retrievedArray = data['savedPets'];
+
+          // 7. Update the state with the retrieved array.
+          setState(() {
+            _savedPets = retrievedArray;
+            isLoading =
+            false; //  set isLoading to false after successfully fetching
+          });
+          print('Retrieved array: $_savedPets'); //debugging
+        } else {
+          print('Array field does not exist in the document.');
+          setState(() {
+            isLoading =
+            false; //  set isLoading to false if the array doesn't exist
+          });
+        }
+      } else {
+        print('Document does not exist.');
+        setState(() {
+          isLoading =
+          false; //  set isLoading to false if the document doesn't exist
+        });
+      }
+    } catch (e) {
+      print('Error retrieving array: $e');
+      setState(() {
+        isLoading =
+        false; //  set isLoading to false on error, to prevent the app from hanging
+      });
+      // Handle errors appropriately in your application
+    }
   }
 
-  // Future<void> _loadPetData() async {
-  //   try {
-  //     String jsonString = await rootBundle.loadString('assets/petsListing.json');
-  //     final List<dynamic> jsonData = jsonDecode(jsonString);
-  //     setState(() {
-  //       _petsList = jsonData.cast<Map<String, dynamic>>();
-  //     });
-  //   } catch (e) {
-  //     print('Error loading JSON: $e');
-  //   } finally {
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //   }
-  // }
+  Future<void> _savePet(String petId) async {
+    CollectionReference usersRef =
+    FirebaseFirestore.instance.collection('Users');
+    DocumentReference userDocRef = usersRef.doc(widget.userId);
+
+    try {
+      if (_savedPets.contains(petId)) {
+        await userDocRef.update({
+          'savedPets': FieldValue.arrayRemove([petId])
+        });
+        setState(() {
+          _savedPets.remove(petId);
+        });
+      } else {
+        await userDocRef.update({
+          'savedPets': FieldValue.arrayUnion([petId])
+        });
+        setState(() {
+          _savedPets.add(petId);
+        });
+      }
+    } catch (e) {
+      print("Error saving pet: $e"); // Log the error
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    final Map<String, dynamic> index = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final Map<String, dynamic> index =
+    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     int _selectIndex = index['index'];
     List<String> _widgetOption = [
       'homePage',
       'listingPage',
+      'savedPage',
       'notifications',
       'accountPage'
     ];
 
-
-    void pageChange(int index){
+    void pageChange(int index) {
       setState(() {
         _selectIndex = index;
-        Navigator.pushNamed(
-            context,
-            _widgetOption[index],
-            arguments: {
-              'userId' : widget.userId,
-              'index': _selectIndex
-            }
-        );
+        Navigator.pushNamed(context, _widgetOption[index], arguments: {
+          'userId': widget.userId,
+          'index': _selectIndex
+        });
       });
-
-
     }
-
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Dog Finder",style: TextStyle(color: Colors.deepPurple),),
+        title: Text(
+          "Dog Finder",
+          style: TextStyle(color: Colors.deepPurple),
+        ),
         actions: [
-          IconButton(onPressed: (){
-            setState(() {
-              isGridView = !isGridView;
-            });
-          }, icon: Icon(isGridView ? Icons.view_list : Icons.grid_view, color: Colors.deepPurple,))
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  isGridView = !isGridView;
+                });
+              },
+              icon: Icon(
+                isGridView ? Icons.view_list : Icons.grid_view,
+                color: Colors.deepPurple,
+              ))
         ],
       ),
       body: Column(
@@ -136,7 +186,8 @@ class _ListingPageState extends State<ListingPage> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.deepPurple, width: 2),
+                  borderSide:
+                  BorderSide(color: Colors.deepPurple, width: 2),
                 ),
               ),
               onChanged: (value) {
@@ -148,12 +199,15 @@ class _ListingPageState extends State<ListingPage> {
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('Pets').snapshots(),
+              stream:
+              FirebaseFirestore.instance.collection('Pets').snapshots(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
+                if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 }
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                if (!snapshot.hasData ||
+                    snapshot.data!.docs.isEmpty) {
                   return Center(child: Text("No pets available."));
                 }
 
@@ -161,7 +215,8 @@ class _ListingPageState extends State<ListingPage> {
 
                 final filteredPets = pets.where((pet) {
                   if (searchTerm.isEmpty) return true;
-                  final breed = (pet['breed'] ?? '').toString().toLowerCase();
+                  final breed =
+                  (pet['breed'] ?? '').toString().toLowerCase();
                   return breed.contains(searchTerm);
                 }).toList();
 
@@ -170,11 +225,13 @@ class _ListingPageState extends State<ListingPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.pets, size: 60, color: Colors.grey),
+                        Icon(Icons.pets,
+                            size: 60, color: Colors.grey),
                         SizedBox(height: 16),
                         Text(
                           'No pets found matching "$searchTerm"',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          style: TextStyle(
+                              fontSize: 16, color: Colors.grey),
                         ),
                       ],
                     ),
@@ -182,10 +239,11 @@ class _ListingPageState extends State<ListingPage> {
                 }
 
                 return isGridView
-                ? GridView.builder(
-                  padding: EdgeInsets.all(10),
+                    ? GridView.builder(
+                    padding: EdgeInsets.all(10),
                     itemCount: filteredPets.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                    SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
@@ -193,59 +251,117 @@ class _ListingPageState extends State<ListingPage> {
                     ),
                     itemBuilder: (context, index) {
                       final pet = filteredPets[index];
+                      final petId = pet.id; // Get the pet's ID
+                      final isSaved =
+                      _savedPets.contains(petId);
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => OneListing(petId: pet.id, userId: widget.userId,)));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OneListing(
+                                    petId: petId,
+                                    userId: widget.userId,
+                                  )));
                         },
                         child: Card(
                           elevation: 4,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(10)),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: pet['imageAssetsPath'] != null
-                                    ? Image.asset(pet['imageAssetsPath'], fit: BoxFit.cover)
-                                    : Image.asset('assets/default.jpg', fit: BoxFit.cover),
-                              ),
-                              Padding(
-                                  padding: EdgeInsets.all(8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(pet['name'] ?? 'Unnamed', style: TextStyle(fontWeight: FontWeight.bold)),
-                                    Text('Breed: ${pet['breed']}'),
-                                  ]
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: pet['imageAssetsPath'] != null
+                                      ? Image.asset(
+                                      pet['imageAssetsPath'],
+                                      fit: BoxFit.cover)
+                                      : Image.asset(
+                                      'assets/default.jpg',
+                                      fit: BoxFit.cover),
                                 ),
-                              )
-                            ]
-                          ),
+                                Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(pet['name'] ?? 'Unnamed',
+                                          style: TextStyle(
+                                              fontWeight:
+                                              FontWeight.bold)),
+                                      Row(
+                                        children: [
+                                          Text('Breed: ${pet['breed']}'),
+                                          Spacer(),
+                                          IconButton(
+                                            icon: Icon(isSaved
+                                                ? Icons.favorite
+                                                : Icons
+                                                .favorite_border),
+                                            onPressed: () {
+                                              _savePet(
+                                                  petId); // Use petId here
+                                            },
+                                            color: Colors.red,
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ]),
                         ),
                       );
-                    }
-                )
-                :
-                ListView.builder(
+                    })
+                    : ListView.builder(
                   itemCount: filteredPets.length,
                   itemBuilder: (context, index) {
                     final pet = filteredPets[index];
+                    final petId = pet.id; // Get the pet ID
+                    final isSaved =
+                    _savedPets.contains(petId); // Check if saved
                     return Card(
                       margin: EdgeInsets.all(10),
                       child: ListTile(
                         leading: pet['imageAssetsPath'] != null
-                            ? Image.asset(pet['imageAssetsPath'], width: 60, height: 60, fit: BoxFit.cover)
-                            : Image.asset('assets/default.jpg', width: 60, height: 60, fit: BoxFit.cover),
+                            ? Image.asset(pet['imageAssetsPath'],
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover)
+                            : Image.asset('assets/default.jpg',
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover),
                         title: Text(pet['name'] ?? 'Unnamed'),
                         subtitle: Text('Breed: ${pet['breed']}'),
-                        trailing: Text('${pet['age']} yrs'),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('${pet['age']} yrs'),
+                            SizedBox(width: 8), // Add some spacing
+                            IconButton(
+                              icon: Icon(
+                                isSaved
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                              ),
+                              onPressed: () {
+                                _savePet(
+                                    petId); // Pass the pet ID to _savePet
+                              },
+                              color: Colors.red,
+                            ),
+                          ],
+                        ),
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => OneListing(
-                                petId: pet.id,
+                                petId: petId,
                                 userId: widget.userId,
                               ),
                             ),
@@ -258,29 +374,6 @@ class _ListingPageState extends State<ListingPage> {
               },
             ),
           ),
-         if(!isLoading)
-              Expanded(
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                          itemCount: _petsList.length,
-                          itemBuilder: (context,index){
-                            return Card(
-                              margin: EdgeInsets.all(10),
-                              child: ListTile(
-                                leading: _petsList[index]['imageAssetsPath'] != null
-                                ? Image.asset(_petsList[index]['imageAssetsPath'], width: 60, height: 60, fit: BoxFit.cover)
-                                : Image.asset('assets/default.jpg', width: 60, height: 60, fit: BoxFit.cover),
-                                  title: Text(_petsList[index]['name'] ?? 'Unnamed'),
-                                  subtitle: Text('${_petsList[index]['species']} • ${_petsList[index]['breed']}'),
-                                  trailing: Text('${_petsList[index]['age']} yrs'),
-                              )
-                            );
-                          }
-                      )
-                    ],
-                  )
-              ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(
@@ -289,12 +382,13 @@ class _ListingPageState extends State<ListingPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => NewListing(ownerId: widget.userId),
+                      builder: (context) =>
+                          NewListing(ownerId: widget.userId),
                     ),
                   );
                 },
                 child: Text('New Listing'),
-                style:  ElevatedButton.styleFrom(
+                style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(
@@ -308,20 +402,49 @@ class _ListingPageState extends State<ListingPage> {
           ),
         ],
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home,color: Colors.deepPurple,),label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.list,color: Colors.deepPurple,),label: "List"),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications,color: Colors.deepPurple,),label: "Notifications"),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle,color: Colors.deepPurple,),label: "Account")
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Colors.deepPurple,
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.list,
+              color: Colors.deepPurple,
+            ),
+            label: "List",
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.bookmark,
+                color: Colors.deepPurple,
+              ),
+              label: "Saved"
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.notifications,
+              color: Colors.deepPurple,
+            ),
+            label: "Notifications",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.account_circle,
+              color: Colors.deepPurple,
+            ),
+            label: "Account",
+          )
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectIndex,
         selectedItemColor: Colors.indigoAccent,
         onTap: pageChange,
         iconSize: 35,
-
       ),
     );
   }
